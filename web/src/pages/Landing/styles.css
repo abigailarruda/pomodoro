@@ -1,0 +1,136 @@
+html,
+body {
+  background: var(--color-background);
+}
+
+/* Sidebar Body */
+
+#wrapper {
+  overflow-x: hidden;
+}
+
+#sidebar-wrapper {
+  min-height: 100vh;
+  margin-left: -11.6rem;
+
+  -webkit-transition: margin 0.25s ease-out;
+  -moz-transition: margin 0.25s ease-out;
+  -o-transition: margin 0.25s ease-out;
+  transition: margin 0.25s ease-out;
+
+  background: var(--color-background);
+  border-right: 2px solid var(--color-border-in-background);
+
+  justify-content: center;
+  text-align: center;
+}
+
+/* Sidebar Brand */
+
+#sidebar-wrapper .sidebar-heading {
+  padding: 4rem;
+  font-size: 1rem;
+}
+
+#sidebar-wrapper .sidebar-heading .brand {
+  padding: 0.5rem;
+  background: var(--color-box);
+  border-radius: 1rem;
+  text-align: center;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Sidebar Links */
+
+#sidebar-wrapper .list-group {
+  width: -11.6rem;
+  text-align: center;
+}
+
+.list-group-flush > .list-group-item {
+  display: flex !important;
+  justify-content: center;
+  margin-bottom: 2rem;
+  padding: 0;
+
+  border: 0;
+  background: var(--color-background);
+}
+
+.btn {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+}
+
+.btn span {
+  margin-left: 1rem;
+}
+
+.btn-sidebar-active {
+  background: var(--color-primary) !important;
+  padding: 1rem !important;
+  border-radius: 1rem !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.btn-sidebar-active span {
+  color: var(--color-text-in-primary);
+  font-weight: 600;
+}
+
+.btn-sidebar {
+  background: transparent !important;
+  padding: 1rem !important;
+  border-radius: 1rem !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.btn-sidebar span {
+  color: var(--color-text-in-background);
+  font-weight: 500;
+}
+
+/* Landing Body */
+
+#page-content-wrapper {
+  min-width: 100vw;
+
+  background: var(--color-background);
+}
+
+#wrapper.toggled #sidebar-wrapper {
+  margin-left: 0;
+}
+
+/* Sibebar Mobile */
+
+@media (max-width: 768px) {
+  #sidebar-wrapper {
+    margin-left: 0;
+  }
+
+  #page-content-wrapper {
+    min-width: 0;
+    width: 100%;
+    padding: 1rem;
+  }
+
+  #wrapper.toggled #sidebar-wrapper {
+    margin-left: -11.6rem;
+  }
+}
+
+.btn-menu {
+  background: var(--color-box) !important;
+  padding: 1rem !important;
+  border-radius: 1rem !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}

@@ -1,0 +1,48 @@
+:root {
+  --color-background: #121212;
+  --color-title-in-background: #e0e0e0;
+  --color-subtitle-in-background: #a2a2a2;
+  --color-text-in-background: #e0e0e0;
+  --color-border-in-background: #1e1e1e;
+  --color-muted-text-in-background: #a2a2a2;
+  --color-primary: #e53935;
+  --color-text-in-primary: #fafafa;
+  --color-box: #1e1e1e;
+  --color-text-in-box: #e1e1e1;
+  --color-box-divider: #121212;
+  --color-contained-button-background: #e53935;
+  --color-text-in-contained-button: #fafafa;
+  --color-outlined-button-border: #1e1e1e;
+  --color-text-in-outlined-button: #a2a2a2;
+  --color-timer-icons: #a2a2a2;
+  --color-dropdown-background: #2e2e2e;
+  --color-dropdown-divider: #1e1e1e;
+  --color-dropdown-text: #e0e0e0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+*:focus {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+html,
+body,
+#root {
+  height: 100vh;
+}
+
+*,
+body,
+input,
+button,
+textarea {
+  font: 500 1rem Nunito;
+  color: var(--color-text-in-background);
+}
