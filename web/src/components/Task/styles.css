@@ -1,0 +1,64 @@
+.card {
+  background-color: var(--color-box) !important;
+  border: 0 !important;
+  border-radius: 1rem !important;
+  margin-bottom: 2rem;
+}
+
+.card-body {
+  padding: 2rem !important;
+}
+
+.card-text {
+  color: var(--color-text-in-box) !important;
+}
+
+.card-footer {
+  padding: 1rem !important;
+  background-color: var(--color-box) !important;
+  border-top: 1px solid var(--color-box-divider) !important;
+  border-radius: 0 0 1rem 1rem !important;
+  color: var(--color-text-in-box) !important;
+}
+
+.btn-dots {
+  background: var(--color-box) !important;
+  padding: 0 0.5rem !important;
+  border-radius: 0 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.done {
+  text-decoration: line-through;
+}
+
+.dropdown-toggle::after {
+  margin: 0 !important;
+  vertical-align: 0 !important;
+  border: 0 !important;
+  content: none !important;
+}
+
+.dropdown-menu {
+  padding: 1rem !important;
+  margin: 0.5rem 0.5rem !important;
+  color: var(--color-dropdown-text) !important;
+  background: var(--color-dropdown-background) !important;
+  border: 0 !important;
+  border-radius: 1rem !important;
+}
+
+.dropdown-item {
+  padding: 0.5rem !important;
+  font-weight: 500 !important;
+  color: var(--color-dropdown-text) !important;
+  background: var(--color-dropdown-background) !important;
+  border: 0 !important;
+}
+
+.dropdown-item a {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}

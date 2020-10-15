@@ -101,7 +101,7 @@ body {
 
 #page-content-wrapper {
   min-width: 100vw;
-
+  padding-right: 11.6rem;
   background: var(--color-background);
 }
 
@@ -124,6 +124,10 @@ body {
 
   #wrapper.toggled #sidebar-wrapper {
     margin-left: -11.6rem;
+  }
+
+  .btn-menu {
+    margin-bottom: 2rem;
   }
 }
 
