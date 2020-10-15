@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 
 import "./styles.css";
 
-import Icon from "@mdi/react";
 import {
-  mdiCalendarMonth,
-  mdiClockTimeThreeOutline,
-  mdiDotsHorizontal,
-  mdiDelete,
-  mdiPencil,
-  mdiCheck,
+  mdiCalendarMonth as calendar,
+  mdiCheck as check,
+  mdiClockTimeThreeOutline as clock,
+  mdiDelete as trash,
+  mdiDotsHorizontal as dots,
+  mdiPencil as pencil,
 } from "@mdi/js";
+import Icon from "@mdi/react";
 
 interface TaskProps {
   text: String;
@@ -27,55 +27,65 @@ const Task: React.FC<TaskProps> = ({ text, date, time, isDone }) => {
       return "card-text";
     }
   }
+
   return (
     <div className="card">
       <div className="card-body">
+        {/* Text */}
         <p className={getClasses()}>{text}</p>
       </div>
-      <div className="card-footer d-flex justify-content-between">
-        <div className="d-flex justify-content-start flex-row">
-          <p className="d-flex align-items-center mb-0">
-            <Icon path={mdiCalendarMonth} size={0.7} color="#e1e1e1" />
+
+      <div className="card-footer">
+        {/* Date & Time */}
+        <div
+          className="justify-content-start
+                     d-none d-sm-none d-md-none d-lg-flex d-xl-flex"
+        >
+          {/* Date */}
+          <p>
+            <Icon path={calendar} size={0.7} color="#e1e1e1" />
             <span className="ml-2">{date}</span>
           </p>
-          <p className="d-flex align-items-center ml-3 mb-0">
-            <Icon path={mdiClockTimeThreeOutline} size={0.7} color="#e1e1e1" />
-            <span className="ml-2">{time}</span>
+
+          {/* Time */}
+          <p className="ml-3">
+            <Icon path={clock} size={0.7} color="#e1e1e1" />
+            <span className="d-flex ml-2">{time}</span>
           </p>
         </div>
+
         <div className="justify-content-end">
+          {/* Menu Button */}
           <button
-            className="btn btn-dots dropdown-toggle"
+            id="menu"
             type="button"
-            id="dropdownMenuButton"
-            data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
+            data-toggle="dropdown"
+            className="btn btn-dots dropdown-toggle"
           >
-            <Icon path={mdiDotsHorizontal} size={0.8} color="#e1e1e1" />
+            <Icon path={dots} size={0.8} color="#e1e1e1" />
           </button>
-          <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a
-              className="dropdown-item d-flex align-items-center"
-              type="button"
-            >
-              <Icon path={mdiCheck} size={0.7} color="#e1e1e1" />
+
+          {/* Menu Dropdown */}
+          <div className="dropdown-menu" aria-labelledby="menu">
+            {/* Mark as done */}
+            <button className="dropdown-item" type="button">
+              <Icon path={check} size={0.7} color="#e1e1e1" />
               <span className="ml-2">Mark as done</span>
-            </a>
-            <a
-              className="dropdown-item d-flex align-items-center"
-              type="button"
-            >
-              <Icon path={mdiPencil} size={0.7} color="#e1e1e1" />
+            </button>
+
+            {/* Edit task */}
+            <button className="dropdown-item" type="button">
+              <Icon path={pencil} size={0.7} color="#e1e1e1" />
               <span className="ml-2">Edit task</span>
-            </a>
-            <a
-              className="dropdown-item d-flex align-items-center"
-              type="button"
-            >
-              <Icon path={mdiDelete} size={0.7} color="#e1e1e1" />
+            </button>
+
+            {/* Delete task */}
+            <button className="dropdown-item" type="button">
+              <Icon path={trash} size={0.7} color="#e1e1e1" />
               <span className="ml-2">Delete task</span>
-            </a>
+            </button>
           </div>
         </div>
       </div>

@@ -14,15 +14,23 @@
 }
 
 .card-footer {
+  display: flex !important;
   padding: 1rem !important;
-  background-color: var(--color-box) !important;
+  background-color: transparent !important;
   border-top: 1px solid var(--color-box-divider) !important;
   border-radius: 0 0 1rem 1rem !important;
   color: var(--color-text-in-box) !important;
+  justify-content: space-between !important;
+}
+
+.card-footer > div > p {
+  display: flex !important;
+  margin-bottom: 0 !important;
+  align-items: center;
 }
 
 .btn-dots {
-  background: var(--color-box) !important;
+  background-color: transparent !important;
   padding: 0 0.5rem !important;
   border-radius: 0 !important;
   border: 0 !important;
@@ -47,6 +55,8 @@
   background: var(--color-dropdown-background) !important;
   border: 0 !important;
   border-radius: 1rem !important;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.25),
+    0 0.5rem 0.5rem rgba(0, 0, 0, 0.22);
 }
 
 .dropdown-item {
@@ -55,10 +65,11 @@
   color: var(--color-dropdown-text) !important;
   background: var(--color-dropdown-background) !important;
   border: 0 !important;
+  display: flex !important;
+  align-items: center !important;
 }
 
-.dropdown-item a {
+.dropdown-item button {
   display: flex;
-  justify-content: start;
   align-items: center;
 }
