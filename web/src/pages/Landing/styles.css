@@ -228,6 +228,12 @@ h1 {
   font-weight: 600 !important;
 }
 
+@media (max-width: 576px) {
+  h1 {
+    font-size: 4rem !important;
+  }
+}
+
 .btn-primary {
   background: var(--color-primary) !important;
   color: var(--color-text-in-primary) !important;

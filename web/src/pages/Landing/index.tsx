@@ -120,7 +120,7 @@ function Landing() {
           <div className="row">
             {/* Timer */}
             <div
-              className="col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5
+              className="pl-md-0 col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5
                          offset-md-1 offset-lg-1 offset-xl-1 order-md-last"
             >
               <div className="timer">
@@ -182,7 +182,7 @@ function Landing() {
 
             {/* Tasks Container */}
             <div
-              className="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 
+              className="pr-md-0 col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 
                          offset-md-1 offset-lg-1 offset-xl-1
                          order-xs-last order-md-first"
             >

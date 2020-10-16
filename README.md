@@ -44,9 +44,7 @@ A **Técnica Pomodoro** é um método de gerenciamento de tempo desenvolvido por
 
 A stack utilizada para criar o Pomodoro está em constante atualização. Até o presente momento, as seguintes tecnologias foram escolhidas:
 
-- [ ] [Axios](https://github.com/axios/axios)
 - [ ] [Bootstrap](https://getbootstrap.com/)
-- [ ] [Express](https://expressjs.com)
 - [ ] [Node.js](https://nodejs.org/pt-br)
 - [ ] [React.js](https://reactjs.org)
 - [ ] [Typescript](https://www.typescriptlang.org)
@@ -70,12 +68,6 @@ A stack utilizada para criar o Pomodoro está em constante atualização. Até o
 2. Execute a aplicação (na ordem a seguir)
 
 ```sh
-  # API
-  $ cd server
-  $ yarn
-  $ yarn knex:migrate
-  $ yarn start
-
   # Aplicação
   $ cd web
   $ yarn
