@@ -27,6 +27,7 @@ import tomato from "../../assets/images/tomato.png";
 function Landing() {
   const [sound, setSound] = useState(mdiVolumeHigh);
   const [playPause, setPlayPause] = useState(mdiPause);
+  const [timer, setTimer] = useState(1500);
 
   function muteTimer(event: any) {
     if (sound === mdiVolumeHigh) {
@@ -36,30 +37,29 @@ function Landing() {
     }
   }
 
-  function startTimer(duration: any, display: any) {
-    var timer = duration,
+  function countDown(display: any, operation: any) {
+    var timer2 = timer,
       minutes,
       seconds;
     setInterval(function () {
-      minutes = parseInt(String(timer / 60), 10);
-      seconds = parseInt(String(timer % 60), 10);
+      minutes = parseInt(String(timer2 / 60), 10);
+      seconds = parseInt(String(timer2 % 60), 10);
 
       minutes = minutes < 10 ? "0" + minutes : minutes;
       seconds = seconds < 10 ? "0" + seconds : seconds;
 
       display.textContent = minutes + ":" + seconds;
 
-      if (--timer < 0) {
-        timer = duration;
+      if (--timer2 < 0) {
+        setTimer(timer);
       }
     }, 1000);
   }
 
-  window.onload = function () {
-    var fiveMinutes = 60 * 25,
-      display = document.querySelector("#time");
-    startTimer(fiveMinutes, display);
-  };
+  function startTimer() {
+    var display = document.querySelector("#time");
+    countDown(display, 1);
+  }
 
   function playTimer(event: any) {
     if (playPause === mdiPause) {
@@ -178,14 +178,18 @@ function Landing() {
                 </div>
 
                 {/* Timer */}
-                <h1 id="time">05:00</h1>
+                <h1 id="time">25:00</h1>
               </div>
 
               <div className="row m-0">
                 {/* Start & Stop Buttons */}
                 <div className="col mb-2 mb-sm-auto pl-0 pr-2">
                   {/* Start Button */}
-                  <button type="button" className="btn btn-primary w-100">
+                  <button
+                    type="button"
+                    className="btn btn-primary w-100"
+                    onClick={() => startTimer()}
+                  >
                     Start
                   </button>
                 </div>
