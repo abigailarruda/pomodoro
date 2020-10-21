@@ -36,6 +36,31 @@ function Landing() {
     }
   }
 
+  function startTimer(duration: any, display: any) {
+    var timer = duration,
+      minutes,
+      seconds;
+    setInterval(function () {
+      minutes = parseInt(String(timer / 60), 10);
+      seconds = parseInt(String(timer % 60), 10);
+
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      seconds = seconds < 10 ? "0" + seconds : seconds;
+
+      display.textContent = minutes + ":" + seconds;
+
+      if (--timer < 0) {
+        timer = duration;
+      }
+    }, 1000);
+  }
+
+  window.onload = function () {
+    var fiveMinutes = 60 * 25,
+      display = document.querySelector("#time");
+    startTimer(fiveMinutes, display);
+  };
+
   function playTimer(event: any) {
     if (playPause === mdiPause) {
       setPlayPause(mdiPlay);
@@ -153,7 +178,7 @@ function Landing() {
                 </div>
 
                 {/* Timer */}
-                <h1>25:00</h1>
+                <h1 id="time">05:00</h1>
               </div>
 
               <div className="row m-0">
