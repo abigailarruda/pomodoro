@@ -41,24 +41,33 @@ function Landing() {
     var timer2 = timer,
       minutes,
       seconds;
-    setInterval(function () {
-      minutes = parseInt(String(timer2 / 60), 10);
-      seconds = parseInt(String(timer2 % 60), 10);
+    if (operation == 2) {
+      console.log(timer);
+      clearInterval(display);
+    } else {
+      console.log("sla");
+      setInterval(function () {
+        console.log("alo");
+        setTimer(timer - 1);
+        minutes = parseInt(String(timer2 / 60), 10);
+        seconds = parseInt(String(timer2 % 60), 10);
 
-      minutes = minutes < 10 ? "0" + minutes : minutes;
-      seconds = seconds < 10 ? "0" + seconds : seconds;
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
 
-      display.textContent = minutes + ":" + seconds;
-
-      if (--timer2 < 0) {
-        setTimer(timer);
-      }
-    }, 1000);
+        display.textContent = minutes + ":" + seconds;
+        --timer2;
+        setTimer(timer2);
+        if (timer < 0) {
+          setTimer(0);
+        }
+      }, 1000);
+    }
   }
 
-  function startTimer() {
+  function startTimer(operation: any) {
     var display = document.querySelector("#time");
-    countDown(display, 1);
+    countDown(display, operation);
   }
 
   function playTimer(event: any) {
@@ -188,7 +197,7 @@ function Landing() {
                   <button
                     type="button"
                     className="btn btn-primary w-100"
-                    onClick={() => startTimer()}
+                    onClick={() => startTimer(1)}
                   >
                     Start
                   </button>
@@ -196,7 +205,11 @@ function Landing() {
 
                 <div className="col pr-0 pl-2">
                   {/* Stop Button */}
-                  <button type="button" className="btn btn-secondary w-100">
+                  <button
+                    type="button"
+                    className="btn btn-secondary w-100"
+                    onClick={() => startTimer(2)}
+                  >
                     Stop
                   </button>
                 </div>
