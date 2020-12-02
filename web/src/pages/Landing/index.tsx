@@ -41,13 +41,11 @@ function Landing() {
     var timer2 = timer,
       minutes,
       seconds;
-    if (operation == 2) {
+    if (operation === 2) {
       console.log(timer);
       clearInterval(display);
     } else {
-      console.log("sla");
       setInterval(function () {
-        console.log("alo");
         setTimer(timer - 1);
         minutes = parseInt(String(timer2 / 60), 10);
         seconds = parseInt(String(timer2 % 60), 10);
