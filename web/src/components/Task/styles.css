@@ -59,7 +59,8 @@
     0 0.5rem 0.5rem rgba(0, 0, 0, 0.22);
 }
 
-.dropdown-item {
+.dropdown-item,
+.dropdown-header {
   padding: 0.5rem !important;
   font-weight: 500 !important;
   color: var(--color-dropdown-text) !important;

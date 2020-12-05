@@ -67,7 +67,8 @@ body {
   text-align: center;
 }
 
-.btn span {
+.btn span,
+.btn a {
   margin-left: 1rem;
 }
 
@@ -79,9 +80,12 @@ body {
   box-shadow: none !important;
 }
 
-.btn-sidebar-active span {
-  color: var(--color-text-in-primary);
-  font-weight: 600;
+.btn-sidebar-active span,
+.btn-sidebar-active a,
+.btn-sidebar-active a:hover {
+  color: var(--color-text-in-primary) !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
 }
 
 .btn-sidebar {
@@ -92,9 +96,12 @@ body {
   box-shadow: none !important;
 }
 
-.btn-sidebar span {
-  color: var(--color-text-in-background);
-  font-weight: 500;
+.btn-sidebar span,
+.btn-sidebar a,
+.btn-sidebar a:hover {
+  color: var(--color-text-in-background) !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
 }
 
 /* Landing Body */

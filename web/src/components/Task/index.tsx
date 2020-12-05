@@ -69,6 +69,15 @@ const Task: React.FC<TaskProps> = ({ text, date, time, isDone }) => {
 
           {/* Menu Dropdown */}
           <div className="dropdown-menu" aria-labelledby="menu">
+            {/* Date & Time on mobile only */}
+            <h6 className="dropdown-header d-flex d-sm-none">
+              <Icon path={calendar} size={0.7} color="#e1e1e1" />
+              <span className="ml-2">{date}</span>
+            </h6>
+            <h6 className="dropdown-header d-flex d-sm-none">
+              <Icon path={clock} size={0.7} color="#e1e1e1" />
+              <span className="ml-2">{time}</span>
+            </h6>
             {/* Mark as done */}
             <button className="dropdown-item" type="button">
               <Icon path={check} size={0.7} color="#e1e1e1" />

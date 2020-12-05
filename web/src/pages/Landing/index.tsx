@@ -1,8 +1,14 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 import "./styles.css";
 
 import Task from "../../components/Task";
+
+import Account from "../Account";
+import Settings from "../Settings";
+import Contact from "../Contact";
+import AddTask from "../AddTask";
 
 import {
   mdiAccount,
@@ -83,7 +89,9 @@ function Landing() {
         <div className="sidebar-heading">
           {/* Tomato Emoji */}
           <div className="brand">
-            <img src={tomato} width="40" alt="Pomodoro Tracker" />
+            <Link to="/">
+              <img src={tomato} width="40" alt="Pomodoro Tracker" />
+            </Link>
           </div>
         </div>
 
@@ -93,39 +101,57 @@ function Landing() {
           <div className="list-group-item">
             <button className="btn btn-sidebar-active" type="button">
               <Icon path={mdiTimer} size={0.7} color="#FAFAFA" />
-              <span>Tracker</span>
+              <Link to="/">Tracker</Link>
             </button>
           </div>
 
           {/* Account */}
           <div className="list-group-item">
-            <button className="btn btn-sidebar" type="button">
+            <button
+              className="btn btn-sidebar"
+              type="button"
+              data-toggle="modal"
+              data-target="#account"
+            >
               <Icon path={mdiAccount} size={0.7} color="#e0e0e0" />
               <span>Account</span>
             </button>
           </div>
+          <Account id="account" />
 
           {/* Settings */}
           <div className="list-group-item">
-            <button className="btn btn-sidebar" type="button">
+            <button
+              className="btn btn-sidebar"
+              type="button"
+              data-toggle="modal"
+              data-target="#settings"
+            >
               <Icon path={mdiCog} size={0.7} color="#e0e0e0" />
               <span>Settings</span>
             </button>
           </div>
+          <Settings id="settings" />
 
           {/* Contact */}
           <div className="list-group-item">
-            <button className="btn btn-sidebar" type="button">
+            <button
+              className="btn btn-sidebar"
+              type="button"
+              data-toggle="modal"
+              data-target="#contact"
+            >
               <Icon path={mdiEmail} size={0.7} color="#e0e0e0" />
               <span>Contact</span>
             </button>
           </div>
+          <Contact id="contact" />
 
           {/* Log Out */}
           <div className="list-group-item">
             <button className="btn btn-sidebar" type="button">
               <Icon path={mdiLogoutVariant} size={0.7} color="#e0e0e0" />
-              <span>Log Out</span>
+              <Link to="/">Log Out</Link>
             </button>
           </div>
         </div>
@@ -235,10 +261,16 @@ function Landing() {
                 </div>
 
                 {/* Add Task Button */}
-                <button type="button" className="btn btn-plus">
+                <button
+                  type="button"
+                  data-toggle="modal"
+                  data-target="#addTask"
+                  className="btn btn-plus"
+                >
                   <Icon path={mdiPlus} size={1} color="#e1e1e1" />
                 </button>
               </div>
+              <AddTask id="addTask" />
 
               <Task
                 text="Design an interactive receipt for a historic landmark."

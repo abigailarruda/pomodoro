@@ -2,12 +2,14 @@ import React from "react";
 
 import "./styles.css";
 
-function AddTask() {
-  return (
-    <>
-      <h1>AddTask</h1>
-    </>
-  );
+import Modal from "../../components/Modal";
+
+interface AddTaskProps {
+  id: string;
+}
+
+function AddTask(props: AddTaskProps) {
+  return <Modal target={props.id}>{/* Conteúdo */}</Modal>;
 }
 
 export default AddTask;
