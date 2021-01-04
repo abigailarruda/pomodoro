@@ -1,0 +1,15 @@
+.title-contact {
+  font-size: 1.5rem !important;
+  color: var(--color-title-in-background) !important;
+  margin-bottom: 0.5rem !important;
+  font-weight: bold;
+  text-align: center !important;
+}
+
+.subtitle-contact {
+  font-size: 1rem !important;
+  color: var(--color-subtitle-in-background) !important;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  text-align: center !important;
+}

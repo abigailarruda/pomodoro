@@ -1,0 +1,56 @@
+.title-settings {
+  font-size: 1.5rem !important;
+  color: var(--color-title-in-background) !important;
+  margin-bottom: 2rem !important;
+  font-weight: bold;
+  text-align: right !important;
+}
+
+label {
+  font-size: 1rem !important;
+  color: var(--color-subtitle-in-background) !important;
+  text-align: left !important;
+}
+
+.custom-select {
+  padding: 0.5rem !important;
+  font-size: 1rem;
+  font-weight: 500 !important;
+  color: var(--color-subtitle-in-background) !important;
+  background: var(--color-background) !important;
+  border: 0 !important;
+  border-radius: 0.5rem !important;
+}
+
+::-webkit-input-placeholder {
+  color: var(--color-subtitle-in-background) !important;
+  font-size: 1rem !important;
+}
+
+::-moz-placeholder {
+  color: var(--color-subtitle-in-background) !important;
+  font-size: 1rem !important;
+}
+
+:-ms-input-placeholder {
+  color: var(--color-subtitle-in-background) !important;
+  font-size: 1rem !important;
+}
+
+:-moz-placeholder {
+  color: var(--color-subtitle-in-background) !important;
+  font-size: 1rem !important;
+}
+
+.btn-save,
+.btn-save:hover,
+.btn-save:focus {
+  margin-top: 2rem !important;
+  width: 100% !important;
+  background: var(--color-primary) !important;
+  border: 0 !important;
+  color: var(--color-text-in-primary) !important;
+  padding: 1rem !important;
+  border-radius: 1rem !important;
+  font-size: 1rem !important;
+}

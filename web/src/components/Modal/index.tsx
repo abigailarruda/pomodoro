@@ -15,7 +15,7 @@ const Modal: React.FC<ModalProps> = ({ target, children }) => {
       aria-labelledby={target}
       aria-hidden="true"
     >
-      <div className="modal-dialog modal-sm modal-dialog-centered">
+      <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-body">{children}</div>
         </div>
