@@ -12,7 +12,7 @@ import {
 } from "@mdi/js";
 import Icon from "@mdi/react";
 
-interface TaskProps {
+export interface TaskProps {
   text: String;
   date: String;
   time: String;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import "./styles.css";
@@ -29,11 +29,15 @@ import Icon from "@mdi/react";
 import $ from "jquery";
 
 import tomato from "../../assets/images/tomato.png";
+import box from "../../assets/images/box.svg";
+
+import db from "../../server/server";
 
 function Landing() {
   const [sound, setSound] = useState(mdiVolumeHigh);
   const [playPause, setPlayPause] = useState(mdiPause);
   const [timer, setTimer] = useState(1500);
+  const [tasks, setTasks] = useState({});
 
   function muteTimer(event: any) {
     if (sound === mdiVolumeHigh) {
@@ -81,6 +85,16 @@ function Landing() {
       setPlayPause(mdiPause);
     }
   }
+
+  useEffect(() => {
+    db.child("tasks").on("value", (snapshot) => {
+      if (snapshot.val() != null) {
+        setTasks({
+          ...snapshot.val(),
+        });
+      }
+    });
+  }, []);
 
   return (
     <div className="d-flex toggled" id="wrapper">
@@ -271,21 +285,17 @@ function Landing() {
                 </button>
               </div>
               <AddTask id="addTask" />
-
-              <Task
-                text="Design an interactive receipt for a historic landmark."
-                date="14/10/2020"
-                time="20:49"
-                isDone={false}
-              />
-
-              <Task
-                text="Create a design to quickly and easily view important
-                information about your home from a remote location."
-                date="14/10/2020"
-                time="20:00"
-                isDone={true}
-              />
+              {Object.keys(tasks).map((id: string) => {
+                return (
+                  <Task
+                    key={id}
+                    text={(tasks as any)[id].text}
+                    date={(tasks as any)[id].date}
+                    time={(tasks as any)[id].time}
+                    isDone={(tasks as any)[id].isDone}
+                  />
+                );
+              })}
             </div>
           </div>
         </div>
