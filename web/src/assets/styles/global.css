@@ -46,3 +46,80 @@ textarea {
   font: 500 1rem Nunito;
   color: var(--color-text-in-background);
 }
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 0 !important;
+  background: var(--color-box);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-box);
+}
+
+.swal2-modal {
+  border-radius: 1rem !important;
+  background-color: var(--color-box) !important;
+  border: 0 !important;
+  padding: 3rem !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.25),
+    0 0.5rem 0.5rem rgba(0, 0, 0, 0.22);
+}
+
+.swal2-icon {
+  margin-top: 0 !important;
+  margin-bottom: 2rem !important;
+}
+
+.swal2-icon.swal2-error {
+  border-color: var(--color-primary) !important;
+  color: var(--color-primary) !important;
+}
+
+.swal2-icon.swal2-error [class^="swal2-x-mark-line"] {
+  background-color: var(--color-primary) !important;
+}
+
+.swal2-icon.swal2-success {
+  border-color: #00c853 !important;
+  color: #00c853 !important;
+}
+
+.swal2-icon.swal2-success [class^="swal2-success-line"] {
+  background-color: #00c853 !important;
+}
+
+.swal2-icon.swal2-success .swal2-success-ring {
+  border-color: #00c853 !important;
+}
+
+.swal2-close {
+  color: var(--color-subtitle-in-background) !important;
+}
+
+.swal2-close:hover {
+  color: var(--color-primary) !important;
+}
+
+.swal2-title {
+  font-size: 1.5rem !important;
+  color: var(--color-title-in-background) !important;
+  margin-bottom: 0.5rem !important;
+  font-weight: bold;
+}
+
+.swal2-text {
+  font-size: 1rem !important;
+  color: var(--color-subtitle-in-background) !important;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  text-align: left !important;
+}

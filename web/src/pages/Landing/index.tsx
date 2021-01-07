@@ -5,6 +5,7 @@ import "./styles.css";
 
 import Task from "../../components/Task";
 
+import EditTask from "../EditTask";
 import Account from "../Account";
 import Settings from "../Settings";
 import Contact from "../Contact";
@@ -29,7 +30,6 @@ import Icon from "@mdi/react";
 import $ from "jquery";
 
 import tomato from "../../assets/images/tomato.png";
-import box from "../../assets/images/box.svg";
 
 import db from "../../server/server";
 
@@ -88,7 +88,7 @@ function Landing() {
 
   useEffect(() => {
     db.child("tasks").on("value", (snapshot) => {
-      if (snapshot.val() != null) {
+      if (snapshot.val()) {
         setTasks({
           ...snapshot.val(),
         });
@@ -285,10 +285,12 @@ function Landing() {
                 </button>
               </div>
               <AddTask id="addTask" />
+              <EditTask id="editTask" />
               {Object.keys(tasks).map((id: string) => {
                 return (
                   <Task
                     key={id}
+                    id={id}
                     text={(tasks as any)[id].text}
                     date={(tasks as any)[id].date}
                     time={(tasks as any)[id].time}

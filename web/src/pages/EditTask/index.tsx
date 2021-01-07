@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import Swal from "sweetalert2";
+import $ from "jquery";
 
 import "./styles.css";
 
@@ -8,16 +9,15 @@ import Modal from "../../components/Modal";
 
 import TaskController from "../../server/controllers/TaskController";
 
-import $ from "jquery";
-
-interface AddTaskProps {
+interface EditTaskProps {
   id: string;
 }
 
-function AddTask(props: AddTaskProps) {
+function EditTask(props: EditTaskProps) {
   const taskController = new TaskController();
 
   const initialFieldValues = {
+    id: "",
     text: "",
     date: "",
     time: "",
@@ -44,8 +44,10 @@ function AddTask(props: AddTaskProps) {
 
   const handleTaskChange = (event: any) => {
     let taskValue = event.target.value;
+    let id = $("#editTask").data("id");
     setValues({
       ...values,
+      id: id,
       text: taskValue,
       date: getCurrentDate(),
       time: getCurrentTime(),
@@ -56,13 +58,13 @@ function AddTask(props: AddTaskProps) {
   const handleFormSubmit = (event: any) => {
     event.preventDefault();
     if (values.text) {
-      let create = taskController.createTask(values);
-      if (create) {
-        ($("#addTask") as any).modal("hide");
+      let update = taskController.updateTask(values);
+      if (update) {
+        ($("#editTask") as any).modal("hide");
         setValues(initialFieldValues);
         Swal.fire({
           title: "Mission complete!",
-          text: "Your task has been successfully added!",
+          text: "Your task has been successfully edited!",
           icon: "success",
           width: 400,
           allowEscapeKey: true,
@@ -100,14 +102,13 @@ function AddTask(props: AddTaskProps) {
 
   return (
     <Modal target={props.id}>
-      <h1 className="title-task">Add a new task</h1>
-      <p className="subtitle-task">Our tip is to use a short description</p>
+      <h1 className="title-edittask">Edit your task</h1>
       <form className="w-100" onSubmit={handleFormSubmit}>
         <div className="form-group">
           <textarea
             className="form-control"
-            placeholder="What task would you like to add?"
-            id="task"
+            placeholder="What task would you like to edit?"
+            id="editTask"
             rows={3}
             name="text"
             value={values.text}
@@ -123,4 +124,4 @@ function AddTask(props: AddTaskProps) {
   );
 }
 
-export default AddTask;
+export default EditTask;

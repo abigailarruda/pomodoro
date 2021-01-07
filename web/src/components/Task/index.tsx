@@ -1,6 +1,11 @@
 import React from "react";
 
+import $ from "jquery";
+import Swal from "sweetalert2";
+
 import "./styles.css";
+
+import TaskController from "../../server/controllers/TaskController";
 
 import {
   mdiCalendarMonth as calendar,
@@ -13,13 +18,53 @@ import {
 import Icon from "@mdi/react";
 
 export interface TaskProps {
-  text: String;
-  date: String;
-  time: String;
+  id?: string;
+  text: string;
+  date: string;
+  time: string;
   isDone: boolean;
 }
 
-const Task: React.FC<TaskProps> = ({ text, date, time, isDone }) => {
+const Task: React.FC<TaskProps> = ({ id, text, date, time, isDone }) => {
+  const taskController = new TaskController();
+
+  function handleEditTask() {
+    let task: TaskProps = taskController.getTask(id || "");
+    ($("#editTask") as any).on("show.bs.modal", function (event: any) {
+      var modal = $("#editTask") as any;
+      modal.find("#editTask").val(task.text);
+    });
+    ($("#editTask") as any).attr("data-id", id);
+    ($("#editTask") as any).modal("show");
+  }
+
+  function handleRemoveTask() {
+    let del = taskController.deleteTask(id || "");
+    if (del) {
+      Swal.fire({
+        title: "Mission complete!",
+        text: "Your task has been successfully deleted!",
+        icon: "success",
+        width: 400,
+        allowEscapeKey: true,
+        allowOutsideClick: true,
+        showCloseButton: true,
+        showConfirmButton: false,
+      });
+    } else {
+      Swal.fire({
+        title: "Oops!",
+        text: "Sorry. We are working on fixing the problem.",
+        icon: "error",
+        width: 400,
+        allowEscapeKey: true,
+        allowOutsideClick: true,
+        showCloseButton: true,
+        showConfirmButton: false,
+      });
+    }
+  }
+
   function getClasses() {
     if (isDone) {
       return "card-text done";
@@ -85,13 +130,25 @@ const Task: React.FC<TaskProps> = ({ text, date, time, isDone }) => {
             </button>
 
             {/* Edit task */}
-            <button className="dropdown-item" type="button">
+            <button
+              className="dropdown-item"
+              type="button"
+              onClick={(event: any) => {
+                handleEditTask();
+              }}
+            >
               <Icon path={pencil} size={0.7} color="#e1e1e1" />
               <span className="ml-2">Edit task</span>
             </button>
 
             {/* Delete task */}
-            <button className="dropdown-item" type="button">
+            <button
+              className="dropdown-item"
+              type="button"
+              onClick={(event: any) => {
+                handleRemoveTask();
+              }}
+            >
               <Icon path={trash} size={0.7} color="#e1e1e1" />
               <span className="ml-2">Delete task</span>
             </button>
