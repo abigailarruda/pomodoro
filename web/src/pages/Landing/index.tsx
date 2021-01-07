@@ -36,7 +36,7 @@ import db from "../../server/server";
 function Landing() {
   const [sound, setSound] = useState(mdiVolumeHigh);
   const [playPause, setPlayPause] = useState(mdiPause);
-  const [timer, setTimer] = useState(1500);
+  const [timer, setTimer] = useState(2);
   const [tasks, setTasks] = useState({});
 
   function muteTimer(event: any) {
@@ -46,36 +46,42 @@ function Landing() {
       setSound(mdiVolumeHigh);
     }
   }
+  
+var estado :any;
 
-  function countDown(display: any, operation: any) {
+  function countDown(display: any,operacao:any) {
     var timer2 = timer,
       minutes,
       seconds;
-    if (operation === 2) {
-      console.log(timer);
-      clearInterval(display);
-    } else {
-      setInterval(function () {
-        setTimer(timer - 1);
-        minutes = parseInt(String(timer2 / 60), 10);
-        seconds = parseInt(String(timer2 % 60), 10);
+    estado = setInterval(function () {
 
-        minutes = minutes < 10 ? "0" + minutes : minutes;
-        seconds = seconds < 10 ? "0" + seconds : seconds;
+      setTimer(timer - 1);
+      minutes = parseInt(String(timer2 / 60), 10);
+      seconds = parseInt(String(timer2 % 60), 10);
+    
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      seconds = seconds < 10 ? "0" + seconds : seconds;
+    
+      display.textContent = minutes + ":" + seconds;
+      --timer2;
+      setTimer(timer2);
+      console.log(operacao);
+      if(timer2 <0 ){
+       clearInterval(estado);
+      }
 
-        display.textContent = minutes + ":" + seconds;
-        --timer2;
-        setTimer(timer2);
-        if (timer < 0) {
-          setTimer(0);
-        }
-      }, 1000);
-    }
+    }, 1000);   
+
   }
 
-  function startTimer(operation: any) {
+  function startTimer(operation:any) {
     var display = document.querySelector("#time");
-    countDown(display, operation);
+    countDown(display,1);
+  }
+
+  function stopTimer(operation:any) {
+    var display = document.querySelector("#time");
+    countDown(display,2);
   }
 
   function playTimer(event: any) {

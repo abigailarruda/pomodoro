@@ -6,7 +6,7 @@ import ReactDOM from "react-dom";
 import Icon from "@mdi/react";
 import "./styles.css";
 import Modal from "../../components/Modal";
-import FacebookLogin from "react-facebook-login";
+
 // @ts-ignore
 import LoginGithub from "react-login-github";
 
