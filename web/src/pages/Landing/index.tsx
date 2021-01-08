@@ -36,8 +36,9 @@ import db from "../../server/server";
 function Landing() {
   const [sound, setSound] = useState(mdiVolumeHigh);
   const [playPause, setPlayPause] = useState(mdiPause);
-  const [timer, setTimer] = useState(2);
+  const [timer, setTimer] = useState(60);
   const [tasks, setTasks] = useState({});
+  var estado :any;
 
   function muteTimer(event: any) {
     if (sound === mdiVolumeHigh) {
@@ -47,8 +48,6 @@ function Landing() {
     }
   }
   
-var estado :any;
-
   function countDown(display: any,operacao:any) {
     var timer2 = timer,
       minutes,
@@ -65,23 +64,21 @@ var estado :any;
       display.textContent = minutes + ":" + seconds;
       --timer2;
       setTimer(timer2);
-      console.log(operacao);
-      if(timer2 <0 ){
+
+      if(timer2 < 0 ){
        clearInterval(estado);
       }
 
     }, 1000);   
-
   }
+
+  $("#stop").click(function(){
+    clearInterval(estado);
+  });
 
   function startTimer(operation:any) {
     var display = document.querySelector("#time");
     countDown(display,1);
-  }
-
-  function stopTimer(operation:any) {
-    var display = document.querySelector("#time");
-    countDown(display,2);
   }
 
   function playTimer(event: any) {
@@ -251,8 +248,8 @@ var estado :any;
                   {/* Stop Button */}
                   <button
                     type="button"
+                    id = "stop"
                     className="btn btn-secondary w-100"
-                    onClick={() => startTimer(2)}
                   >
                     Stop
                   </button>
