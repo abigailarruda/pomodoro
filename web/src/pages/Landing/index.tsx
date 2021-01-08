@@ -36,9 +36,24 @@ import db from "../../server/server";
 function Landing() {
   const [sound, setSound] = useState(mdiVolumeHigh);
   const [playPause, setPlayPause] = useState(mdiPause);
-  const [timer, setTimer] = useState(60);
+  const [timer, setTimer] = useState(5);
+  const [breakTimer, setBreakTimer] = useState(3);
+  const [breakLongTimer, setBreakLongTimer] = useState(8);
+  const [start, setStart] = useState(false);
+  const [stop, setStop] = useState(true);
   const [tasks, setTasks] = useState({});
+
   var estado :any;
+  var estadoBreak :any;
+  var estadoLongBreak: any;
+
+  var timeAnt : any
+  var timeAntBreak : any;
+  var timeAntLongBreak : any;
+
+  var countPomodoros = 0;
+  var countShortsBreaks = 0;
+  var countLongBreaks = 0;
 
   function muteTimer(event: any) {
     if (sound === mdiVolumeHigh) {
@@ -48,13 +63,20 @@ function Landing() {
     }
   }
   
-  function countDown(display: any,operacao:any) {
+  function countDown(display: any) {
     var timer2 = timer,
       minutes,
       seconds;
-    estado = setInterval(function () {
+      
+    setStop(false);
+    setStart(true);
 
-      setTimer(timer - 1);
+    console.log(timer2);
+
+    estado = setInterval(function () {
+    
+      --timer2;
+      timeAnt = timer2;
       minutes = parseInt(String(timer2 / 60), 10);
       seconds = parseInt(String(timer2 % 60), 10);
     
@@ -62,23 +84,92 @@ function Landing() {
       seconds = seconds < 10 ? "0" + seconds : seconds;
     
       display.textContent = minutes + ":" + seconds;
-      --timer2;
-      setTimer(timer2);
+      
+      console.log(timer2);
 
-      if(timer2 < 0 ){
-       clearInterval(estado);
+      if(timer2 <= 0 ){
+        setTimer(timer2);
+        countPomodoros++;
+        clearInterval(estado);
+        breakTime(display);
       }
+    }, 1000);   
 
+  }
+
+  function breakTime(display: any) {
+    var timer2 = breakTimer,
+      minutes,
+      seconds;  
+      
+      setStart(true);
+      setStop(true); 
+
+    estadoBreak = setInterval(function () {
+    
+      --timer2;
+      minutes = parseInt(String(timer2 / 60), 10);
+      seconds = parseInt(String(timer2 % 60), 10);
+    
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      seconds = seconds < 10 ? "0" + seconds : seconds;
+    
+      display.textContent = minutes + ":" + seconds;
+      
+      console.log(timer2);
+
+      if(timer2 <= 0 ){
+        setTimer(timer2);
+        countShortsBreaks++;
+        clearInterval(estadoBreak);
+        countDown(display);
+      }
+    }, 1000);
+
+  }
+
+  function breakLongTime(display: any) {
+    var timer2 = breakLongTimer,
+      minutes,
+      seconds; 
+      
+      setStart(true);
+      setStop(true);   
+
+    estadoLongBreak = setInterval(function () {
+    
+      --timer2;
+    
+      minutes = parseInt(String(timer2 / 60), 10);
+      seconds = parseInt(String(timer2 % 60), 10);
+    
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      seconds = seconds < 10 ? "0" + seconds : seconds;
+    
+      display.textContent = minutes + ":" + seconds;
+      
+      console.log(timer2);
+
+      if(timer2 <= 0 ){
+        setTimer(timer2);
+        countLongBreaks++;
+        clearInterval(estadoLongBreak);
+        countDown(display);
+      }
     }, 1000);   
   }
 
   $("#stop").click(function(){
+    setStart(false);
+    console.log(timeAnt)
+    setTimer(timeAnt);
+    setBreakTimer(timeAntBreak);
     clearInterval(estado);
   });
 
-  function startTimer(operation:any) {
+  function startTimer() {
     var display = document.querySelector("#time");
-    countDown(display,1);
+    countDown(display);
   }
 
   function playTimer(event: any) {
@@ -238,7 +329,8 @@ function Landing() {
                   <button
                     type="button"
                     className="btn btn-primary w-100"
-                    onClick={() => startTimer(1)}
+                    disabled = {start}
+                    onClick={() => startTimer()}
                   >
                     Start
                   </button>
@@ -249,6 +341,7 @@ function Landing() {
                   <button
                     type="button"
                     id = "stop"
+                    disabled = {stop}
                     className="btn btn-secondary w-100"
                   >
                     Stop
@@ -258,7 +351,7 @@ function Landing() {
 
               {/* Stats */}
               <p className="stats">
-                You have completed 3 pomodoros, 2 short breaks and 0 long
+                You have completed {countPomodoros} pomodoros, 2 short breaks and 0 long
                 breaks.
               </p>
             </div>
