@@ -1,11 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 
 import $ from "jquery";
-import Swal from "sweetalert2";
 
 import "./styles.css";
 
-import TaskController from "../../server/controllers/TaskController";
+import showAlert from "../../assets/util/alert";
 
 import {
   mdiCalendarMonth as calendar,
@@ -17,6 +16,13 @@ import {
 } from "@mdi/js";
 import Icon from "@mdi/react";
 
+import { useDispatch } from "react-redux";
+import {
+  deleteTask,
+  getTask,
+  markAsDone,
+} from "../../store/modules/task/actions";
+
 export interface TaskProps {
   id?: string;
   text: string;
@@ -26,50 +32,35 @@ export interface TaskProps {
 }
 
 const Task: React.FC<TaskProps> = ({ id, text, date, time, isDone }) => {
-  const taskController = new TaskController();
+  const dispatch = useDispatch();
 
-  function handleEditTask() {
-    let task: TaskProps = taskController.getTask(id || "");
-    ($("#editTask") as any).on("show.bs.modal", function (event: any) {
-      var modal = $("#editTask") as any;
-      modal.find("#editTask").val(task.text);
-    });
-    ($("#editTask") as any).attr("data-id", id);
+  const [done, setDone] = useState(isDone ? "card-text done" : "card-text");
+
+  function editTask() {
+    dispatch(getTask(id || ""));
     ($("#editTask") as any).modal("show");
   }
 
-  function handleRemoveTask() {
-    let del = taskController.deleteTask(id || "");
-    if (del) {
-      Swal.fire({
-        title: "Mission complete!",
-        text: "Your task has been successfully deleted!",
-        icon: "success",
-        width: 400,
-        allowEscapeKey: true,
-        allowOutsideClick: true,
-        showCloseButton: true,
-        showConfirmButton: false,
-      });
-    } else {
-      Swal.fire({
-        title: "Oops!",
-        text: "Sorry. We are working on fixing the problem.",
-        icon: "error",
-        width: 400,
-        allowEscapeKey: true,
-        allowOutsideClick: true,
-        showCloseButton: true,
-        showConfirmButton: false,
-      });
-    }
+  function markTaskAsDone() {
+    dispatch(getTask(id || ""));
+    setDone("card-text done");
+    dispatch(markAsDone(id || ""));
   }
 
-  function getClasses() {
-    if (isDone) {
-      return "card-text done";
+  function removeTask() {
+    let d = dispatch(deleteTask(id || ""));
+    if (d) {
+      showAlert(
+        "Mission complete!",
+        "Your task has been successfully deleted!",
+        "success"
+      );
     } else {
-      return "card-text";
+      showAlert(
+        "Oops!",
+        "Sorry. We are working on fixing the problem.",
+        "error"
+      );
     }
   }
 
@@ -77,7 +68,7 @@ const Task: React.FC<TaskProps> = ({ id, text, date, time, isDone }) => {
     <div className="card">
       <div className="card-body">
         {/* Text */}
-        <p className={getClasses()}>{text}</p>
+        <p className={done}>{text}</p>
       </div>
 
       <div className="card-footer">
@@ -124,7 +115,13 @@ const Task: React.FC<TaskProps> = ({ id, text, date, time, isDone }) => {
               <span className="ml-2">{time}</span>
             </h6>
             {/* Mark as done */}
-            <button className="dropdown-item" type="button">
+            <button
+              className="dropdown-item"
+              type="button"
+              onClick={(event: any) => {
+                markTaskAsDone();
+              }}
+            >
               <Icon path={check} size={0.7} color="#e1e1e1" />
               <span className="ml-2">Mark as done</span>
             </button>
@@ -134,7 +131,7 @@ const Task: React.FC<TaskProps> = ({ id, text, date, time, isDone }) => {
               className="dropdown-item"
               type="button"
               onClick={(event: any) => {
-                handleEditTask();
+                editTask();
               }}
             >
               <Icon path={pencil} size={0.7} color="#e1e1e1" />
@@ -146,7 +143,7 @@ const Task: React.FC<TaskProps> = ({ id, text, date, time, isDone }) => {
               className="dropdown-item"
               type="button"
               onClick={(event: any) => {
-                handleRemoveTask();
+                removeTask();
               }}
             >
               <Icon path={trash} size={0.7} color="#e1e1e1" />

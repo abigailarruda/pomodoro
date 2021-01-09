@@ -5,7 +5,7 @@ import db from "../server";
 export default class TaskController {
   createTask(task: TaskProps) {
     let err: boolean = true;
-    db.child("tasks").push(task, (error: any) => {
+    let k = db.child("tasks").push(task, (error: any) => {
       if (error) {
         return function () {
           err = false;
@@ -16,22 +16,63 @@ export default class TaskController {
         };
       }
     });
+    db.child(`tasks/${k.key}`).set(
+      {
+        id: k.key,
+        text: task.text,
+        time: task.time,
+        date: task.date,
+        isDone: task.isDone,
+      },
+      (error: any) => {
+        if (error) {
+          return function () {
+            err = false;
+          };
+        } else {
+          return function () {
+            err = true;
+          };
+        }
+      }
+    );
     return err;
   }
 
-  updateTask(task: TaskProps) {
-    let err: boolean = true;
-    db.child(`tasks/${task.id}`).set(task, (error: any) => {
-      if (error) {
-        return function () {
-          err = false;
-        };
-      } else {
-        return function () {
-          err = true;
-        };
-      }
+  readTask() {
+    let array: TaskProps[] = [];
+    var urlRef = db.child("tasks");
+    urlRef.once("value", function (snapshot) {
+      snapshot.forEach(function (child) {
+        array.push(child.val());
+      });
     });
+    return array;
+  }
+
+  updateTask(id: string, newText: string) {
+    let err: boolean = true;
+    let task: TaskProps = this.getTask(id);
+    db.child(`tasks/${id}`).set(
+      {
+        id: task.id,
+        text: newText,
+        date: task.date,
+        time: task.time,
+        isDone: task.isDone,
+      },
+      (error: any) => {
+        if (error) {
+          return function () {
+            err = false;
+          };
+        } else {
+          return function () {
+            err = true;
+          };
+        }
+      }
+    );
     return err;
   }
 
@@ -66,6 +107,32 @@ export default class TaskController {
         };
       }
     });
+    return err;
+  }
+
+  markAsDone(id: string) {
+    let err: boolean = true;
+    let task: TaskProps = this.getTask(id);
+    db.child(`tasks/${id}`).set(
+      {
+        id: task.id,
+        text: task.text,
+        date: task.date,
+        time: task.time,
+        isDone: true,
+      },
+      (error: any) => {
+        if (error) {
+          return function () {
+            err = false;
+          };
+        } else {
+          return function () {
+            err = true;
+          };
+        }
+      }
+    );
     return err;
   }
 }

@@ -39,8 +39,15 @@
 
 .btn-google span {
   color: var(--color-text-in-primary) !important;
-  font-weight: 600;
+  font-weight: 600 !important;
   font-size: 1rem !important;
+  padding: 0 !important;
+}
+
+.btn-google div {
+  padding: 0 !important;
+  background: transparent !important;
+  border-radius: 0 !important;
 }
 
 .btn-github,

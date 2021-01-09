@@ -1,28 +1,30 @@
 import React, { useState } from "react";
 
-import Swal from "sweetalert2";
-
 import "./styles.css";
 
 import Modal from "../../components/Modal";
 
-import TaskController from "../../server/controllers/TaskController";
-
 import $ from "jquery";
+
+import { useDispatch } from "react-redux";
+import { createTask } from "../../store/modules/task/actions";
+
+import showAlert from "../../assets/util/alert";
 
 interface AddTaskProps {
   id: string;
 }
 
 function AddTask(props: AddTaskProps) {
-  const taskController = new TaskController();
-
   const initialFieldValues = {
+    id: "",
     text: "",
     date: "",
     time: "",
     isDone: false,
   };
+
+  const dispatch = useDispatch();
 
   const [values, setValues] = useState(initialFieldValues);
 
@@ -46,6 +48,7 @@ function AddTask(props: AddTaskProps) {
     let taskValue = event.target.value;
     setValues({
       ...values,
+      id: "",
       text: taskValue,
       date: getCurrentDate(),
       time: getCurrentTime(),
@@ -56,45 +59,26 @@ function AddTask(props: AddTaskProps) {
   const handleFormSubmit = (event: any) => {
     event.preventDefault();
     if (values.text) {
-      let create = taskController.createTask(values);
+      let create = dispatch(createTask(values));
       if (create) {
         ($("#addTask") as any).modal("hide");
         setValues(initialFieldValues);
-        Swal.fire({
-          title: "Mission complete!",
-          text: "Your task has been successfully added!",
-          icon: "success",
-          width: 400,
-          allowEscapeKey: true,
-          allowOutsideClick: true,
-          showCloseButton: true,
-          showConfirmButton: false,
-        });
+        showAlert(
+          "Mission complete!",
+          "Your task has been successfully added!",
+          "success"
+        );
       } else {
-        Swal.fire({
-          title: "Oops!",
-          text: "Sorry. We are working on fixing the problem.",
-          icon: "error",
-          width: 400,
-          allowEscapeKey: true,
-          allowOutsideClick: true,
-          showCloseButton: true,
-          showConfirmButton: false,
-        });
+        showAlert(
+          "Oops!",
+          "Sorry. We are working on fixing the problem.",
+          "error"
+        );
       }
     } else {
       let modalID = "#" + props.id;
       ($(modalID) as any).modal("hide");
-      Swal.fire({
-        title: "Oops!",
-        text: "You must add a description for your task.",
-        icon: "error",
-        width: 400,
-        allowEscapeKey: true,
-        allowOutsideClick: true,
-        showCloseButton: true,
-        showConfirmButton: false,
-      });
+      showAlert("Oops!", "You must add a description for your task.", "error");
     }
   };
 

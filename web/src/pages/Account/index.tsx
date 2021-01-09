@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import tomato from "../../assets/images/tomato.png";
 import { mdiGoogle, mdiGithub } from "@mdi/js";
 import { GoogleLogin } from "react-google-login";
-import ReactDOM from "react-dom";
 import Icon from "@mdi/react";
 import "./styles.css";
 import Modal from "../../components/Modal";
@@ -11,27 +10,24 @@ import LoginGithub from "react-login-github";
 // @ts-ignore
 import OAuth2Login from 'react-simple-oauth2-login';
 
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../../store/modules/user/actions";
+
+// @ts-ignore
+// import LoginGithub from "react-login-github";
+
 interface AccountProps {
   id: string;
 }
 
 function Account(props: AccountProps) {
-  
-  const [name, setName] = useState();
-  const [email, setEmail] = useState();
-  const [profileImage, setProfileImage] = useState();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const dispatch = useDispatch();
 
   const responseGoogle = (response: any) => {
     const {
       profileObj: { name, email, imgUrl },
     } = response;
-    setName(name);
-    setEmail(email);
-    setProfileImage(imgUrl);
-    setIsLoggedIn(true);
-
-    console.log(name);
+    dispatch(loginSuccess({ name, email, imgUrl, isLogged: true }));
   };
 
   const responseGithub = async (response : any) => {
@@ -67,17 +63,22 @@ function Account(props: AccountProps) {
         </div>
         <h1 className="title-account">Welcome to Pomodoro</h1>
         <p className="subtitle-account">Don't have an account?</p>
-        {/* <button className="btn btn-google">
-    <Icon path={mdiGoogle} size={0.7} color="#FAFAFA" />{" "}
-    <span>Continue with Google</span>
-  </button> */}
         <GoogleLogin
+          render={(renderProps) => (
+            <button
+              className="btn btn-google"
+              onClick={renderProps.onClick}
+              disabled={renderProps.disabled}
+            >
+              <Icon path={mdiGoogle} size={0.7} color="#FAFAFA" />{" "}
+              <span>Continue with Google</span>
+            </button>
+          )}
           clientId="587816230714-dfbm14btdpbfavveitvuqbt2a38q27if.apps.googleusercontent.com"
-          buttonText="Continue with Google"
           onSuccess={responseGoogle}
           onFailure={responseGoogle}
           cookiePolicy={"single_host_origin"}
-          className="btn btn-google"
+          isSignedIn={true}
         />
          <OAuth2Login
           authorizationUrl="https://github.com/login/oauth/authorize"
