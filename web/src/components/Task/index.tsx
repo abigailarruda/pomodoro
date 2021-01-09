@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 
 import $ from "jquery";
-import Swal from "sweetalert2";
 
 import "./styles.css";
 
-import TaskController from "../../server/controllers/TaskController";
+import showAlert from "../../assets/util/alert";
 
 import {
   mdiCalendarMonth as calendar,
@@ -18,7 +17,11 @@ import {
 import Icon from "@mdi/react";
 
 import { useDispatch } from "react-redux";
-import { getTask, markAsDone } from "../../store/modules/task/actions";
+import {
+  deleteTask,
+  getTask,
+  markAsDone,
+} from "../../store/modules/task/actions";
 
 export interface TaskProps {
   id?: string;
@@ -29,46 +32,35 @@ export interface TaskProps {
 }
 
 const Task: React.FC<TaskProps> = ({ id, text, date, time, isDone }) => {
-  const taskController = new TaskController();
   const dispatch = useDispatch();
 
   const [done, setDone] = useState(isDone ? "card-text done" : "card-text");
 
-  function handleEditTask() {
+  function editTask() {
     dispatch(getTask(id || ""));
     ($("#editTask") as any).modal("show");
   }
 
-  function handleDidTask() {
+  function markTaskAsDone() {
     dispatch(getTask(id || ""));
     setDone("card-text done");
     dispatch(markAsDone(id || ""));
   }
 
-  function handleRemoveTask() {
-    let del = taskController.deleteTask(id || "");
-    if (del) {
-      Swal.fire({
-        title: "Mission complete!",
-        text: "Your task has been successfully deleted!",
-        icon: "success",
-        width: 400,
-        allowEscapeKey: true,
-        allowOutsideClick: true,
-        showCloseButton: true,
-        showConfirmButton: false,
-      });
+  function removeTask() {
+    let d = dispatch(deleteTask(id || ""));
+    if (d) {
+      showAlert(
+        "Mission complete!",
+        "Your task has been successfully deleted!",
+        "success"
+      );
     } else {
-      Swal.fire({
-        title: "Oops!",
-        text: "Sorry. We are working on fixing the problem.",
-        icon: "error",
-        width: 400,
-        allowEscapeKey: true,
-        allowOutsideClick: true,
-        showCloseButton: true,
-        showConfirmButton: false,
-      });
+      showAlert(
+        "Oops!",
+        "Sorry. We are working on fixing the problem.",
+        "error"
+      );
     }
   }
 
@@ -127,7 +119,7 @@ const Task: React.FC<TaskProps> = ({ id, text, date, time, isDone }) => {
               className="dropdown-item"
               type="button"
               onClick={(event: any) => {
-                handleDidTask();
+                markTaskAsDone();
               }}
             >
               <Icon path={check} size={0.7} color="#e1e1e1" />
@@ -139,7 +131,7 @@ const Task: React.FC<TaskProps> = ({ id, text, date, time, isDone }) => {
               className="dropdown-item"
               type="button"
               onClick={(event: any) => {
-                handleEditTask();
+                editTask();
               }}
             >
               <Icon path={pencil} size={0.7} color="#e1e1e1" />
@@ -151,7 +143,7 @@ const Task: React.FC<TaskProps> = ({ id, text, date, time, isDone }) => {
               className="dropdown-item"
               type="button"
               onClick={(event: any) => {
-                handleRemoveTask();
+                removeTask();
               }}
             >
               <Icon path={trash} size={0.7} color="#e1e1e1" />

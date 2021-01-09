@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 
-import Swal from "sweetalert2";
-
 import "./styles.css";
 
 import Modal from "../../components/Modal";
@@ -10,6 +8,8 @@ import $ from "jquery";
 
 import { useDispatch } from "react-redux";
 import { createTask } from "../../store/modules/task/actions";
+
+import showAlert from "../../assets/util/alert";
 
 interface AddTaskProps {
   id: string;
@@ -63,41 +63,22 @@ function AddTask(props: AddTaskProps) {
       if (create) {
         ($("#addTask") as any).modal("hide");
         setValues(initialFieldValues);
-        Swal.fire({
-          title: "Mission complete!",
-          text: "Your task has been successfully added!",
-          icon: "success",
-          width: 400,
-          allowEscapeKey: true,
-          allowOutsideClick: true,
-          showCloseButton: true,
-          showConfirmButton: false,
-        });
+        showAlert(
+          "Mission complete!",
+          "Your task has been successfully added!",
+          "success"
+        );
       } else {
-        Swal.fire({
-          title: "Oops!",
-          text: "Sorry. We are working on fixing the problem.",
-          icon: "error",
-          width: 400,
-          allowEscapeKey: true,
-          allowOutsideClick: true,
-          showCloseButton: true,
-          showConfirmButton: false,
-        });
+        showAlert(
+          "Oops!",
+          "Sorry. We are working on fixing the problem.",
+          "error"
+        );
       }
     } else {
       let modalID = "#" + props.id;
       ($(modalID) as any).modal("hide");
-      Swal.fire({
-        title: "Oops!",
-        text: "You must add a description for your task.",
-        icon: "error",
-        width: 400,
-        allowEscapeKey: true,
-        allowOutsideClick: true,
-        showCloseButton: true,
-        showConfirmButton: false,
-      });
+      showAlert("Oops!", "You must add a description for your task.", "error");
     }
   };
 

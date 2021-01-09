@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import "./styles.css";
 
-import Task from "../../components/Task";
+import Task, { TaskProps } from "../../components/Task";
 
 import EditTask from "../EditTask";
 import Account from "../Account";
@@ -31,7 +31,10 @@ import $ from "jquery";
 
 import tomato from "../../assets/images/tomato.png";
 
+import { useSelector } from "react-redux";
+import TaskController from "../../server/controllers/TaskController";
 import db from "../../server/server";
+import { stringify } from "querystring";
 
 function Landing() {
   const [sound, setSound] = useState(mdiVolumeHigh);
@@ -41,15 +44,35 @@ function Landing() {
   const [breakLongTimer, setBreakLongTimer] = useState(8);
   const [start, setStart] = useState(false);
   const [stop, setStop] = useState(true);
+
+  const loggedUser = useSelector((state: any) => state.user);
+
+  const controller = new TaskController();
   const [tasks, setTasks] = useState({});
 
-  var estado :any;
-  var estadoBreak :any;
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    imgUrl: "",
+    isLogged: false,
+  });
+
+  useEffect(() => {
+    db.child("tasks").on("value", (snapshot) => {
+      setTasks({
+        ...snapshot.val(),
+      });
+    });
+    setUser(loggedUser);
+  }, [loggedUser]);
+
+  var estado: any;
+  var estadoBreak: any;
   var estadoLongBreak: any;
 
-  var timeAnt : any
-  var timeAntBreak : any;
-  var timeAntLongBreak : any;
+  var timeAnt: any;
+  var timeAntBreak: any;
+  var timeAntLongBreak: any;
 
   var countPomodoros = 0;
   var countShortsBreaks = 0;
@@ -62,106 +85,101 @@ function Landing() {
       setSound(mdiVolumeHigh);
     }
   }
-  
+
   function countDown(display: any) {
     var timer2 = timer,
       minutes,
       seconds;
-      
+
     setStop(false);
     setStart(true);
 
     console.log(timer2);
 
     estado = setInterval(function () {
-    
       --timer2;
       timeAnt = timer2;
       minutes = parseInt(String(timer2 / 60), 10);
       seconds = parseInt(String(timer2 % 60), 10);
-    
+
       minutes = minutes < 10 ? "0" + minutes : minutes;
       seconds = seconds < 10 ? "0" + seconds : seconds;
-    
+
       display.textContent = minutes + ":" + seconds;
-      
+
       console.log(timer2);
 
-      if(timer2 <= 0 ){
+      if (timer2 <= 0) {
         setTimer(timer2);
         countPomodoros++;
         clearInterval(estado);
         breakTime(display);
       }
-    }, 1000);   
-
+    }, 1000);
   }
 
   function breakTime(display: any) {
     var timer2 = breakTimer,
       minutes,
-      seconds;  
-      
-      setStart(true);
-      setStop(true); 
+      seconds;
+
+    setStart(true);
+    setStop(true);
 
     estadoBreak = setInterval(function () {
-    
       --timer2;
       minutes = parseInt(String(timer2 / 60), 10);
       seconds = parseInt(String(timer2 % 60), 10);
-    
+
       minutes = minutes < 10 ? "0" + minutes : minutes;
       seconds = seconds < 10 ? "0" + seconds : seconds;
-    
+
       display.textContent = minutes + ":" + seconds;
-      
+
       console.log(timer2);
 
-      if(timer2 <= 0 ){
+      if (timer2 <= 0) {
         setTimer(timer2);
         countShortsBreaks++;
         clearInterval(estadoBreak);
         countDown(display);
       }
     }, 1000);
-
   }
 
   function breakLongTime(display: any) {
     var timer2 = breakLongTimer,
       minutes,
-      seconds; 
-      
-      setStart(true);
-      setStop(true);   
+      seconds;
+
+    setStart(true);
+    setStop(true);
 
     estadoLongBreak = setInterval(function () {
-    
       --timer2;
-    
+
       minutes = parseInt(String(timer2 / 60), 10);
       seconds = parseInt(String(timer2 % 60), 10);
-    
+
       minutes = minutes < 10 ? "0" + minutes : minutes;
       seconds = seconds < 10 ? "0" + seconds : seconds;
-    
+
       display.textContent = minutes + ":" + seconds;
-      
+
       console.log(timer2);
 
-      if(timer2 <= 0 ){
+      if (timer2 <= 0) {
         setTimer(timer2);
         countLongBreaks++;
         clearInterval(estadoLongBreak);
         countDown(display);
       }
-    }, 1000);   
+    }, 1000);
   }
 
-  $("#stop").click(function(){
+  $("#stop").click(function () {
     setStart(false);
-    console.log(timeAnt)
+    console.log(timeAnt);
     setTimer(timeAnt);
     setBreakTimer(timeAntBreak);
     clearInterval(estado);
@@ -179,16 +197,6 @@ function Landing() {
       setPlayPause(mdiPause);
     }
   }
-
-  useEffect(() => {
-    db.child("tasks").on("value", (snapshot) => {
-      if (snapshot.val()) {
-        setTasks({
-          ...snapshot.val(),
-        });
-      }
-    });
-  }, []);
 
   return (
     <div className="d-flex toggled" id="wrapper">
@@ -256,12 +264,16 @@ function Landing() {
           <Contact id="contact" />
 
           {/* Log Out */}
-          <div className="list-group-item">
-            <button className="btn btn-sidebar" type="button">
-              <Icon path={mdiLogoutVariant} size={0.7} color="#e0e0e0" />
-              <Link to="/">Log Out</Link>
-            </button>
-          </div>
+          {user.isLogged ? (
+            <div className="list-group-item">
+              <button className="btn btn-sidebar" type="button">
+                <Icon path={mdiLogoutVariant} size={0.7} color="#e0e0e0" />
+                <Link to="/">Log Out</Link>
+              </button>
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
 
@@ -329,7 +341,7 @@ function Landing() {
                   <button
                     type="button"
                     className="btn btn-primary w-100"
-                    disabled = {start}
+                    disabled={start}
                     onClick={() => startTimer()}
                   >
                     Start
@@ -340,8 +352,8 @@ function Landing() {
                   {/* Stop Button */}
                   <button
                     type="button"
-                    id = "stop"
-                    disabled = {stop}
+                    id="stop"
+                    disabled={stop}
                     className="btn btn-secondary w-100"
                   >
                     Stop
@@ -351,8 +363,8 @@ function Landing() {
 
               {/* Stats */}
               <p className="stats">
-                You have completed {countPomodoros} pomodoros, 2 short breaks and 0 long
-                breaks.
+                You have completed {countPomodoros} pomodoros, 2 short breaks
+                and 0 long breaks.
               </p>
             </div>
 
@@ -366,7 +378,9 @@ function Landing() {
               <div className="header">
                 {/* Title & Subtitle */}
                 <div className="headings">
-                  <h4>Tasks</h4>
+                  <h4 className="text-truncate">
+                    {user.isLogged ? `Hi, ${user.name}` : "Tasks"}
+                  </h4>
                   <h6>Try adding new tasks!</h6>
                 </div>
 

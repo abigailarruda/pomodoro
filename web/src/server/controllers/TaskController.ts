@@ -39,6 +39,17 @@ export default class TaskController {
     return err;
   }
 
+  readTask() {
+    let array: TaskProps[] = [];
+    var urlRef = db.child("tasks");
+    urlRef.once("value", function (snapshot) {
+      snapshot.forEach(function (child) {
+        array.push(child.val());
+      });
+    });
+    return array;
+  }
+
   updateTask(id: string, newText: string) {
     let err: boolean = true;
     let task: TaskProps = this.getTask(id);
