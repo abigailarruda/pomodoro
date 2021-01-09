@@ -15,6 +15,8 @@
     "@types/react-dom": "^16.9.0",
     "bootstrap": "^4.5.3",
     "firebase": "^8.2.1",
+    "github-gatekeeper": "^1.0.2",
+    "github-token-user": "^3.0.0",
     "jquery": "^3.5.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -22,6 +24,7 @@
     "react-login-github": "^1.0.6",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
+    "react-simple-oauth2-login": "^0.2.0",
     "sweetalert2": "^10.13.0",
     "typescript": "~3.7.2"
   },
