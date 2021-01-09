@@ -32,7 +32,7 @@ const Task: React.FC<TaskProps> = ({ id, text, date, time, isDone }) => {
   const taskController = new TaskController();
   const dispatch = useDispatch();
 
-  const [done, setDone] = useState("card-text");
+  const [done, setDone] = useState(isDone ? "card-text done" : "card-text");
 
   function handleEditTask() {
     dispatch(getTask(id || ""));
