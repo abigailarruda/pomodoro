@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import tomato from "../../assets/images/tomato.png";
-import { mdiGoogle, mdiGithub } from "@mdi/js";
+import { mdiGithub } from "@mdi/js";
 import { GoogleLogin } from "react-google-login";
-import ReactDOM from "react-dom";
 import Icon from "@mdi/react";
 import "./styles.css";
 import Modal from "../../components/Modal";
 
 // @ts-ignore
-import LoginGithub from "react-login-github";
+// import LoginGithub from "react-login-github";
 
 interface AccountProps {
   id: string;

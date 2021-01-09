@@ -7,21 +7,28 @@ import "./styles.css";
 
 import Modal from "../../components/Modal";
 
-import TaskController from "../../server/controllers/TaskController";
+import { useDispatch, useSelector } from "react-redux";
+import { TaskProps } from "../../components/Task";
+import { updateTask } from "../../store/modules/task/actions";
 
 interface EditTaskProps {
   id: string;
 }
 
+interface Type {
+  task: TaskProps;
+}
+
 function EditTask(props: EditTaskProps) {
-  const taskController = new TaskController();
+  const dispatch = useDispatch();
+  const taskToEdit = useSelector((state: Type) => state.task);
 
   const initialFieldValues = {
-    id: "",
-    text: "",
-    date: "",
-    time: "",
-    isDone: false,
+    id: taskToEdit.id,
+    text: taskToEdit.text,
+    date: taskToEdit.date,
+    time: taskToEdit.time,
+    isDone: taskToEdit.isDone,
   };
 
   const [values, setValues] = useState(initialFieldValues);
@@ -44,21 +51,20 @@ function EditTask(props: EditTaskProps) {
 
   const handleTaskChange = (event: any) => {
     let taskValue = event.target.value;
-    let id = $("#editTask").data("id");
     setValues({
       ...values,
-      id: id,
+      id: taskToEdit.id,
       text: taskValue,
       date: getCurrentDate(),
       time: getCurrentTime(),
-      isDone: false,
+      isDone: taskToEdit.isDone,
     });
   };
 
   const handleFormSubmit = (event: any) => {
     event.preventDefault();
     if (values.text) {
-      let update = taskController.updateTask(values);
+      let update = dispatch(updateTask(values.id || "", values.text));
       if (update) {
         ($("#editTask") as any).modal("hide");
         setValues(initialFieldValues);
@@ -111,7 +117,7 @@ function EditTask(props: EditTaskProps) {
             id="editTask"
             rows={3}
             name="text"
-            value={values.text}
+            defaultValue={taskToEdit.text}
             onChange={handleTaskChange}
             required
           ></textarea>

@@ -6,23 +6,25 @@ import "./styles.css";
 
 import Modal from "../../components/Modal";
 
-import TaskController from "../../server/controllers/TaskController";
-
 import $ from "jquery";
+
+import { useDispatch } from "react-redux";
+import { createTask } from "../../store/modules/task/actions";
 
 interface AddTaskProps {
   id: string;
 }
 
 function AddTask(props: AddTaskProps) {
-  const taskController = new TaskController();
-
   const initialFieldValues = {
+    id: "",
     text: "",
     date: "",
     time: "",
     isDone: false,
   };
+
+  const dispatch = useDispatch();
 
   const [values, setValues] = useState(initialFieldValues);
 
@@ -46,6 +48,7 @@ function AddTask(props: AddTaskProps) {
     let taskValue = event.target.value;
     setValues({
       ...values,
+      id: "",
       text: taskValue,
       date: getCurrentDate(),
       time: getCurrentTime(),
@@ -56,7 +59,7 @@ function AddTask(props: AddTaskProps) {
   const handleFormSubmit = (event: any) => {
     event.preventDefault();
     if (values.text) {
-      let create = taskController.createTask(values);
+      let create = dispatch(createTask(values));
       if (create) {
         ($("#addTask") as any).modal("hide");
         setValues(initialFieldValues);

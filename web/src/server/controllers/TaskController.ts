@@ -19,7 +19,10 @@ export default class TaskController {
     db.child(`tasks/${k.key}`).set(
       {
         id: k.key,
-        ...task,
+        text: task.text,
+        time: task.time,
+        date: task.date,
+        isDone: task.isDone,
       },
       (error: any) => {
         if (error) {
@@ -36,19 +39,29 @@ export default class TaskController {
     return err;
   }
 
-  updateTask(task: TaskProps) {
+  updateTask(id: string, newText: string) {
     let err: boolean = true;
-    db.child(`tasks/${task.id}`).set(task, (error: any) => {
-      if (error) {
-        return function () {
-          err = false;
-        };
-      } else {
-        return function () {
-          err = true;
-        };
+    let task: TaskProps = this.getTask(id);
+    db.child(`tasks/${id}`).set(
+      {
+        id: task.id,
+        text: newText,
+        date: task.date,
+        time: task.time,
+        isDone: task.isDone,
+      },
+      (error: any) => {
+        if (error) {
+          return function () {
+            err = false;
+          };
+        } else {
+          return function () {
+            err = true;
+          };
+        }
       }
-    });
+    );
     return err;
   }
 
@@ -83,6 +96,32 @@ export default class TaskController {
         };
       }
     });
+    return err;
+  }
+
+  markAsDone(id: string) {
+    let err: boolean = true;
+    let task: TaskProps = this.getTask(id);
+    db.child(`tasks/${id}`).set(
+      {
+        id: task.id,
+        text: task.text,
+        date: task.date,
+        time: task.time,
+        isDone: true,
+      },
+      (error: any) => {
+        if (error) {
+          return function () {
+            err = false;
+          };
+        } else {
+          return function () {
+            err = true;
+          };
+        }
+      }
+    );
     return err;
   }
 }

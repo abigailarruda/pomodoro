@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import $ from "jquery";
 import Swal from "sweetalert2";
@@ -17,6 +17,9 @@ import {
 } from "@mdi/js";
 import Icon from "@mdi/react";
 
+import { useDispatch } from "react-redux";
+import { getTask, markAsDone } from "../../store/modules/task/actions";
+
 export interface TaskProps {
   id?: string;
   text: string;
@@ -27,15 +30,19 @@ export interface TaskProps {
 
 const Task: React.FC<TaskProps> = ({ id, text, date, time, isDone }) => {
   const taskController = new TaskController();
+  const dispatch = useDispatch();
+
+  const [done, setDone] = useState("card-text");
 
   function handleEditTask() {
-    let task: TaskProps = taskController.getTask(id || "");
-    ($("#editTask") as any).on("show.bs.modal", function (event: any) {
-      var modal = $("#editTask") as any;
-      modal.find("#editTask").val(task.text);
-    });
-    ($("#editTask") as any).attr("data-id", id);
+    dispatch(getTask(id || ""));
     ($("#editTask") as any).modal("show");
+  }
+
+  function handleDidTask() {
+    dispatch(getTask(id || ""));
+    setDone("card-text done");
+    dispatch(markAsDone(id || ""));
   }
 
   function handleRemoveTask() {
@@ -65,19 +72,11 @@ const Task: React.FC<TaskProps> = ({ id, text, date, time, isDone }) => {
     }
   }
 
-  function getClasses() {
-    if (isDone) {
-      return "card-text done";
-    } else {
-      return "card-text";
-    }
-  }
-
   return (
     <div className="card">
       <div className="card-body">
         {/* Text */}
-        <p className={getClasses()}>{text}</p>
+        <p className={done}>{text}</p>
       </div>
 
       <div className="card-footer">
@@ -124,7 +123,13 @@ const Task: React.FC<TaskProps> = ({ id, text, date, time, isDone }) => {
               <span className="ml-2">{time}</span>
             </h6>
             {/* Mark as done */}
-            <button className="dropdown-item" type="button">
+            <button
+              className="dropdown-item"
+              type="button"
+              onClick={(event: any) => {
+                handleDidTask();
+              }}
+            >
               <Icon path={check} size={0.7} color="#e1e1e1" />
               <span className="ml-2">Mark as done</span>
             </button>
