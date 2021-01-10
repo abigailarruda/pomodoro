@@ -57,15 +57,6 @@ function Landing() {
     isLogged: false,
   });
 
-  useEffect(() => {
-    db.child("tasks").on("value", (snapshot) => {
-      setTasks({
-        ...snapshot.val(),
-      });
-    });
-    setUser(loggedUser);
-  }, [loggedUser]);
-
   var estado: any;
   var estadoBreak: any;
   var estadoLongBreak: any;
@@ -74,9 +65,22 @@ function Landing() {
   var timeAntBreak: any;
   var timeAntLongBreak: any;
 
-  var countPomodoros = 0;
-  var countShortsBreaks = 0;
-  var countLongBreaks = 0;
+  var countAux = 0;
+  var countShortAux = 0;
+  var countLongAux = 0;
+
+  const [countPomodoros, setPomodoros] = useState(0);
+  const [countShortsBreaks, setShortsBreaks] = useState(0);
+  const [countLongBreaks, setLongBreaks] = useState(0);
+
+  useEffect(() => {
+    db.child("tasks").on("value", (snapshot) => {
+      setTasks({
+        ...snapshot.val(),
+      });
+    });
+    setUser(loggedUser);
+  }, [loggedUser]);
 
   function muteTimer(event: any) {
     if (sound === mdiVolumeHigh) {
@@ -90,11 +94,9 @@ function Landing() {
     var timer2 = timer,
       minutes,
       seconds;
-
-    setStop(false);
+    
+    setStop(true);
     setStart(true);
-
-    console.log(timer2);
 
     estado = setInterval(function () {
       --timer2;
@@ -107,11 +109,10 @@ function Landing() {
 
       display.textContent = minutes + ":" + seconds;
 
-      console.log(timer2);
-
       if (timer2 <= 0) {
+        countAux++;
+        setPomodoros(countAux);
         setTimer(timer2);
-        countPomodoros++;
         clearInterval(estado);
         breakTime(display);
       }
@@ -136,11 +137,10 @@ function Landing() {
 
       display.textContent = minutes + ":" + seconds;
 
-      console.log(timer2);
-
       if (timer2 <= 0) {
         setTimer(timer2);
-        countShortsBreaks++;
+        countShortAux++;
+        setShortsBreaks(countShortAux);
         clearInterval(estadoBreak);
         countDown(display);
       }
@@ -166,11 +166,10 @@ function Landing() {
 
       display.textContent = minutes + ":" + seconds;
 
-      console.log(timer2);
-
       if (timer2 <= 0) {
         setTimer(timer2);
-        countLongBreaks++;
+        countLongAux++;
+        setLongBreaks(countLongAux);
         clearInterval(estadoLongBreak);
         countDown(display);
       }
@@ -363,8 +362,8 @@ function Landing() {
 
               {/* Stats */}
               <p className="stats">
-                You have completed {countPomodoros} pomodoros, 2 short breaks
-                and 0 long breaks.
+                You have completed {countPomodoros} pomodoros, {countShortsBreaks} short breaks
+                and {countLongBreaks} long breaks.
               </p>
             </div>
 
