@@ -37,11 +37,16 @@ import db from "../../server/server";
 import { stringify } from "querystring";
 
 function Landing() {
+
+  const timeCountDown = 7;
+  const timeShortBreak = 5;
+  const timeLongBreak = 6;
+
   const [sound, setSound] = useState(mdiVolumeHigh);
   const [playPause, setPlayPause] = useState(mdiPause);
-  const [timer, setTimer] = useState(5);
-  const [breakTimer, setBreakTimer] = useState(3);
-  const [breakLongTimer, setBreakLongTimer] = useState(8);
+  const [timer, setTimer] = useState(timeCountDown);
+  const [breakTimer, setBreakTimer] = useState(timeShortBreak);
+  const [breakLongTimer, setBreakLongTimer] = useState(timeLongBreak);
   const [start, setStart] = useState(false);
   const [stop, setStop] = useState(true);
 
@@ -60,10 +65,7 @@ function Landing() {
   var estado: any;
   var estadoBreak: any;
   var estadoLongBreak: any;
-
-  var timeAnt: any;
-  var timeAntBreak: any;
-  var timeAntLongBreak: any;
+  var situacao = "countDown";
 
   var countAux = 0;
   var countShortAux = 0;
@@ -95,12 +97,21 @@ function Landing() {
       minutes,
       seconds;
     
-    setStop(true);
+    setStop(false);
     setStart(true);
 
+    
+
+    if(situacao == "shortBreak" || situacao == "longBreak"){
+      timer2 = timeCountDown;
+      console.log("bbb")
+    } 
+    situacao = "countDown";
+
     estado = setInterval(function () {
+
       --timer2;
-      timeAnt = timer2;
+
       minutes = parseInt(String(timer2 / 60), 10);
       seconds = parseInt(String(timer2 % 60), 10);
 
@@ -108,11 +119,12 @@ function Landing() {
       seconds = seconds < 10 ? "0" + seconds : seconds;
 
       display.textContent = minutes + ":" + seconds;
+      
+      setTimer(timer2);
 
       if (timer2 <= 0) {
         countAux++;
         setPomodoros(countAux);
-        setTimer(timer2);
         clearInterval(estado);
         breakTime(display);
       }
@@ -126,9 +138,16 @@ function Landing() {
 
     setStart(true);
     setStop(true);
+ 
+    if(situacao == "countDown" || situacao == "longBreak"){
+      timer2 = timeShortBreak;
+      situacao = "shortBreak";
+    } 
 
     estadoBreak = setInterval(function () {
+
       --timer2;
+
       minutes = parseInt(String(timer2 / 60), 10);
       seconds = parseInt(String(timer2 % 60), 10);
 
@@ -137,8 +156,9 @@ function Landing() {
 
       display.textContent = minutes + ":" + seconds;
 
+      setBreakTimer(timer2);
+
       if (timer2 <= 0) {
-        setTimer(timer2);
         countShortAux++;
         setShortsBreaks(countShortAux);
         clearInterval(estadoBreak);
@@ -155,7 +175,14 @@ function Landing() {
     setStart(true);
     setStop(true);
 
+    if(situacao == "countDown" || situacao == "shortBreak"){
+      timer2 = timeLongBreak;
+    } 
+
+    situacao = "longBreak";
+
     estadoLongBreak = setInterval(function () {
+
       --timer2;
 
       minutes = parseInt(String(timer2 / 60), 10);
@@ -166,8 +193,9 @@ function Landing() {
 
       display.textContent = minutes + ":" + seconds;
 
+      setTimer(timer2);
+
       if (timer2 <= 0) {
-        setTimer(timer2);
         countLongAux++;
         setLongBreaks(countLongAux);
         clearInterval(estadoLongBreak);
@@ -178,15 +206,34 @@ function Landing() {
 
   $("#stop").click(function () {
     setStart(false);
-    console.log(timeAnt);
-    setTimer(timeAnt);
-    setBreakTimer(timeAntBreak);
-    clearInterval(estado);
+    if(situacao == "countDown"){
+      clearInterval(estado)
+      console.log("limpar countDown");
+    } 
+    if(situacao == "shortBreak"){
+      clearInterval(estadoBreak)
+      console.log("limpar shortBreak");
+    } 
+    if(situacao == "longBreak"){
+      clearInterval(estadoLongBreak)
+      console.log("limpar longBreak");
+    } 
   });
 
   function startTimer() {
     var display = document.querySelector("#time");
-    countDown(display);
+    if(situacao == "countDown"){
+      countDown(display);
+      console.log("countDown");
+    } 
+    if(situacao == "shortBreak"){
+      breakTime(display);
+      console.log("shortBreak");
+    } 
+    if(situacao == "longBreak"){
+      breakLongTime(display);
+      console.log("longBreak");
+    } 
   }
 
   function playTimer(event: any) {
