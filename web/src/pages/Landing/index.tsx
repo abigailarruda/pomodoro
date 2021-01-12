@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import "./styles.css";
 
-import Task, { TaskProps } from "../../components/Task";
+import Task from "../../components/Task";
 
 import EditTask from "../EditTask";
 import Account from "../Account";
@@ -31,28 +31,15 @@ import $ from "jquery";
 
 import tomato from "../../assets/images/tomato.png";
 
-import { useSelector } from "react-redux";
-import TaskController from "../../server/controllers/TaskController";
+import { useSelector, useDispatch } from "react-redux";
 import db from "../../server/server";
 import { stringify } from "querystring";
+import { getTimer } from "../../store/modules/timer/action";
 
 function Landing() {
-
-  const timeCountDown = 7;
-  const timeShortBreak = 5;
-  const timeLongBreak = 6;
-
-  const [sound, setSound] = useState(mdiVolumeHigh);
-  const [playPause, setPlayPause] = useState(mdiPause);
-  const [timer, setTimer] = useState(timeCountDown);
-  const [breakTimer, setBreakTimer] = useState(timeShortBreak);
-  const [breakLongTimer, setBreakLongTimer] = useState(timeLongBreak);
-  const [start, setStart] = useState(false);
-  const [stop, setStop] = useState(true);
-
   const loggedUser = useSelector((state: any) => state.user);
+  const initTimer = useSelector((state: any) => state.timer);
 
-  const controller = new TaskController();
   const [tasks, setTasks] = useState({});
 
   const [user, setUser] = useState({
@@ -60,6 +47,14 @@ function Landing() {
     email: "",
     imgUrl: "",
     isLogged: false,
+  });
+
+  const [defaultTimer, setDefaultTimer] = useState({
+    pomodoro: 1500,
+    shortBreak: 300,
+    longBreak: 900,
+    sound: "",
+    repeat: 4,
   });
 
   var estado: any;
@@ -75,6 +70,8 @@ function Landing() {
   const [countShortsBreaks, setShortsBreaks] = useState(0);
   const [countLongBreaks, setLongBreaks] = useState(0);
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     db.child("tasks").on("value", (snapshot) => {
       setTasks({
@@ -82,7 +79,23 @@ function Landing() {
       });
     });
     setUser(loggedUser);
+    dispatch(getTimer());
+    console.log("state", initTimer);
+    console.log("defaulttimer", defaultTimer);
   }, [loggedUser]);
+
+  const timeCountDown = defaultTimer.pomodoro;
+  const timeShortBreak = defaultTimer.shortBreak;
+  const timeLongBreak = defaultTimer.longBreak;
+  const repeat = defaultTimer.repeat;
+
+  const [sound, setSound] = useState(mdiVolumeHigh);
+  const [playPause, setPlayPause] = useState(mdiPause);
+  const [timer, setTimer] = useState(timeCountDown);
+  const [breakTimer, setBreakTimer] = useState(timeShortBreak);
+  const [breakLongTimer, setBreakLongTimer] = useState(timeLongBreak);
+  const [start, setStart] = useState(false);
+  const [stop, setStop] = useState(true);
 
   function muteTimer(event: any) {
     if (sound === mdiVolumeHigh) {
@@ -96,20 +109,17 @@ function Landing() {
     var timer2 = timer,
       minutes,
       seconds;
-    
+
     setStop(false);
     setStart(true);
 
-    
-
-    if(situacao == "shortBreak" || situacao == "longBreak"){
+    if (situacao === "shortBreak" || situacao === "longBreak") {
       timer2 = timeCountDown;
-      console.log("bbb")
-    } 
+      console.log("bbb");
+    }
     situacao = "countDown";
 
     estado = setInterval(function () {
-
       --timer2;
 
       minutes = parseInt(String(timer2 / 60), 10);
@@ -119,7 +129,7 @@ function Landing() {
       seconds = seconds < 10 ? "0" + seconds : seconds;
 
       display.textContent = minutes + ":" + seconds;
-      
+
       setTimer(timer2);
 
       if (timer2 <= 0) {
@@ -138,14 +148,13 @@ function Landing() {
 
     setStart(true);
     setStop(true);
- 
-    if(situacao == "countDown" || situacao == "longBreak"){
+
+    if (situacao === "countDown" || situacao === "longBreak") {
       timer2 = timeShortBreak;
       situacao = "shortBreak";
-    } 
+    }
 
     estadoBreak = setInterval(function () {
-
       --timer2;
 
       minutes = parseInt(String(timer2 / 60), 10);
@@ -175,14 +184,13 @@ function Landing() {
     setStart(true);
     setStop(true);
 
-    if(situacao == "countDown" || situacao == "shortBreak"){
+    if (situacao === "countDown" || situacao === "shortBreak") {
       timer2 = timeLongBreak;
-    } 
+    }
 
     situacao = "longBreak";
 
     estadoLongBreak = setInterval(function () {
-
       --timer2;
 
       minutes = parseInt(String(timer2 / 60), 10);
@@ -206,34 +214,34 @@ function Landing() {
 
   $("#stop").click(function () {
     setStart(false);
-    if(situacao == "countDown"){
-      clearInterval(estado)
+    if (situacao === "countDown") {
+      clearInterval(estado);
       console.log("limpar countDown");
-    } 
-    if(situacao == "shortBreak"){
-      clearInterval(estadoBreak)
+    }
+    if (situacao === "shortBreak") {
+      clearInterval(estadoBreak);
       console.log("limpar shortBreak");
-    } 
-    if(situacao == "longBreak"){
-      clearInterval(estadoLongBreak)
+    }
+    if (situacao === "longBreak") {
+      clearInterval(estadoLongBreak);
       console.log("limpar longBreak");
-    } 
+    }
   });
 
   function startTimer() {
     var display = document.querySelector("#time");
-    if(situacao == "countDown"){
+    if (situacao === "countDown") {
       countDown(display);
       console.log("countDown");
-    } 
-    if(situacao == "shortBreak"){
+    }
+    if (situacao === "shortBreak") {
       breakTime(display);
       console.log("shortBreak");
-    } 
-    if(situacao == "longBreak"){
+    }
+    if (situacao === "longBreak") {
       breakLongTime(display);
       console.log("longBreak");
-    } 
+    }
   }
 
   function playTimer(event: any) {
@@ -409,8 +417,9 @@ function Landing() {
 
               {/* Stats */}
               <p className="stats">
-                You have completed {countPomodoros} pomodoros, {countShortsBreaks} short breaks
-                and {countLongBreaks} long breaks.
+                You have completed {countPomodoros} pomodoros,{" "}
+                {countShortsBreaks} short breaks and {countLongBreaks} long
+                breaks.
               </p>
             </div>
 

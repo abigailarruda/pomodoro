@@ -1,14 +1,58 @@
-import React from "react";
+import React, { useState } from "react";
 
 import "./styles.css";
 
 import Modal from "../../components/Modal";
+
+import { Timer } from "../../server/controllers/TimerController";
+import { useDispatch } from "react-redux";
+import { setTimer, getTimer } from "../../store/modules/timer/action";
 
 interface SettingsProps {
   id: string;
 }
 
 function Settings(props: SettingsProps) {
+  const dispatch = useDispatch();
+
+  const handleTimerChange = (event: any) => {
+    let value = event.target.value;
+    let timer: Timer = {
+      pomodoro: 1500,
+      shortBreak: 300,
+      longBreak: 900,
+      sound: "",
+      repeat: 4,
+    };
+    if (value === "default") {
+      timer = {
+        pomodoro: 1500,
+        shortBreak: 300,
+        longBreak: 900,
+        sound: "",
+        repeat: 4,
+      };
+    } else if (value === "personal") {
+      timer = {
+        pomodoro: 1800,
+        shortBreak: 300,
+        longBreak: 900,
+        sound: "",
+        repeat: 4,
+      };
+    } else if (value === "work") {
+      timer = {
+        pomodoro: 3000,
+        shortBreak: 600,
+        longBreak: 1200,
+        sound: "",
+        repeat: 2,
+      };
+    }
+    dispatch(setTimer(timer));
+    dispatch(getTimer());
+  };
+
   return (
     <Modal target={props.id}>
       <h1 className="title-settings">Settings</h1>
@@ -18,7 +62,11 @@ function Settings(props: SettingsProps) {
             Scheme
           </label>
           <div className="col-8">
-            <select className="custom-select" id="scheme">
+            <select
+              className="custom-select"
+              id="scheme"
+              onChange={handleTimerChange}
+            >
               <option defaultValue="default">default · 25 5 15 4</option>
               <option value="personal">personal · 30 2 25 4</option>
               <option value="work">work · 50 10 20 2</option>
@@ -36,9 +84,6 @@ function Settings(props: SettingsProps) {
             </select>
           </div>
         </div>
-        <button className="btn btn-save" type="submit">
-          Save
-        </button>
       </form>
     </Modal>
   );
