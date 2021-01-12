@@ -63,6 +63,7 @@ function Landing() {
   var situacao = "countDown";
 
   var countAux = 0;
+  var countVezes = 0;
   var countShortAux = 0;
   var countLongAux = 0;
 
@@ -71,11 +72,6 @@ function Landing() {
   const [countLongBreaks, setLongBreaks] = useState(0);
 
   const dispatch = useDispatch();
-
-  let timeCountDown: number;
-  let timeShortBreak: number;
-  let timeLongBreak: number;
-  let repeat: number;
 
   const [sound, setSound] = useState(mdiVolumeHigh);
   const [playPause, setPlayPause] = useState(mdiPause);
@@ -91,7 +87,8 @@ function Landing() {
     setUser(loggedUser);
     setTimer(initTimer.pomodoro);
     setBreakTimer(initTimer.shortBreak);
-    setLongBreaks(initTimer.longBreak);
+    setBreakLongTimer(initTimer.longBreak);
+    setRepeat(initTimer.repeat);
     let minutos = initTimer.pomodoro / 60 || 25;
     setTimerText(`${minutos}:00`);
   }, [loggedUser, initTimer]);
@@ -99,6 +96,7 @@ function Landing() {
   const [timer, setTimer] = useState(1500);
   const [breakTimer, setBreakTimer] = useState(300);
   const [breakLongTimer, setBreakLongTimer] = useState(900);
+  const [repeat, setRepeat] = useState(4);
   const [timerText, setTimerText] = useState("25:00");
 
   function muteTimer(event: any) {
@@ -137,9 +135,15 @@ function Landing() {
 
       if (timer2 <= 0) {
         countAux++;
+        countVezes++;
         setPomodoros(countAux);
         clearInterval(estado);
-        breakTime(display);
+        if(countVezes === repeat ){
+          countVezes = 0;
+          breakLongTime(display);
+        }else{
+          breakTime(display);
+        }
       }
     }, 1000);
   }
@@ -210,7 +214,6 @@ function Landing() {
         countLongAux++;
         setLongBreaks(countLongAux);
         clearInterval(estadoLongBreak);
-        countDown(display);
       }
     }, 1000);
   }

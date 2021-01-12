@@ -5,7 +5,7 @@ export interface Timer {
   shortBreak: number;
   longBreak: number;
   repeat: number;
-  sound: string;
+  sound: any;
 }
 
 export default class TimerController {
