@@ -28,7 +28,8 @@
     "react-simple-oauth2-login": "^0.2.0",
     "redux": "^4.0.5",
     "sweetalert2": "^10.13.0",
-    "typescript": "~3.7.2"
+    "typescript": "~3.7.2",
+    "uifx": "^2.0.7"
   },
   "scripts": {
     "start": "react-scripts start",

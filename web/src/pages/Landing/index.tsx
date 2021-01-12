@@ -11,6 +11,13 @@ import Settings from "../Settings";
 import Contact from "../Contact";
 import AddTask from "../AddTask";
 
+/* Isso aqui é da musica*/
+import UIfx from "uifx";
+// @ts-ignore
+import beepAudio from "../../components/sounds/beep.mp3";
+// @ts-ignore
+import bellAudio from "../../components/sounds/bell.mp3";
+
 import {
   mdiAccount,
   mdiCog,
@@ -53,7 +60,7 @@ function Landing() {
     pomodoro: 1500,
     shortBreak: 300,
     longBreak: 900,
-    sound: "",
+    sound: "../../components/sounds/bell.mp3",
     repeat: 4,
   });
 
@@ -89,6 +96,7 @@ function Landing() {
     setBreakTimer(initTimer.shortBreak);
     setBreakLongTimer(initTimer.longBreak);
     setRepeat(initTimer.repeat);
+    setMusic(initTimer.sound);
     let minutos = initTimer.pomodoro / 60 || 25;
     setTimerText(`${minutos}:00`);
   }, [loggedUser, initTimer]);
@@ -98,6 +106,7 @@ function Landing() {
   const [breakLongTimer, setBreakLongTimer] = useState(900);
   const [repeat, setRepeat] = useState(4);
   const [timerText, setTimerText] = useState("25:00");
+  const [music, setMusic] = useState("../../components/sounds/bell.mp3");
 
   function muteTimer(event: any) {
     if (sound === mdiVolumeHigh) {
@@ -111,6 +120,8 @@ function Landing() {
     var timer2 = timer || 1500,
       minutes,
       seconds;
+
+    
 
     setStop(false);
     setStart(true);

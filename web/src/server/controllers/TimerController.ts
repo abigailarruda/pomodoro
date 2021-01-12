@@ -1,5 +1,14 @@
 import db from "../server";
 
+/* Isso aqui é da musica*/
+import UIfx from "uifx";
+// @ts-ignore
+import beepAudio from "../../components/sounds/beep.mp3";
+// @ts-ignore
+import bellAudio from "../../components/sounds/bell.mp3";
+
+
+
 export interface Timer {
   pomodoro: number;
   shortBreak: number;
@@ -51,7 +60,7 @@ export default class TimerController {
       pomodoro: 1500,
       shortBreak: 300,
       longBreak: 900,
-      sound: "",
+      sound: "../../components/sounds/bell.mp3",
       repeat: 4,
     };
     db.child(`user/timer`).on(

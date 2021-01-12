@@ -8,6 +8,13 @@ import { Timer } from "../../server/controllers/TimerController";
 import { useDispatch } from "react-redux";
 import { setTimer, getTimer } from "../../store/modules/timer/action";
 
+/* Isso aqui é da musica*/
+import UIfx from "uifx";
+// @ts-ignore
+import beepAudio from "../../components/sounds/beep.mp3";
+// @ts-ignore
+import bellAudio from "../../components/sounds/bell.mp3";
+
 interface SettingsProps {
   id: string;
 }
@@ -21,7 +28,7 @@ function Settings(props: SettingsProps) {
       pomodoro: 1500,
       shortBreak: 300,
       longBreak: 900,
-      sound: "",
+      sound: "../../components/sounds/bell.mp3",
       repeat: 4,
     };
     if (value === "default") {
@@ -29,7 +36,7 @@ function Settings(props: SettingsProps) {
         pomodoro: 1500,
         shortBreak: 300,
         longBreak: 900,
-        sound: "",
+        sound: "../../components/sounds/bell.mp3",
         repeat: 4,
       };
     } else if (value === "personal") {
@@ -37,7 +44,7 @@ function Settings(props: SettingsProps) {
         pomodoro: 1800,
         shortBreak: 300,
         longBreak: 900,
-        sound: "",
+        sound: "../../components/sounds/bell.mp3",
         repeat: 4,
       };
     } else if (value === "work") {
@@ -45,7 +52,7 @@ function Settings(props: SettingsProps) {
         pomodoro: 3000,
         shortBreak: 600,
         longBreak: 1200,
-        sound: "",
+        sound: "../../components/sounds/bell.mp3",
         repeat: 2,
       };
     }
@@ -78,7 +85,10 @@ function Settings(props: SettingsProps) {
             Sound
           </label>
           <div className="col-8">
-            <select className="custom-select" id="sound">
+            <select 
+            className="custom-select" 
+            id="sound"
+            >
               <option defaultValue="bell">bell</option>
               <option value="beep">beep</option>
             </select>
