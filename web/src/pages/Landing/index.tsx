@@ -34,7 +34,7 @@ import tomato from "../../assets/images/tomato.png";
 import { useSelector, useDispatch } from "react-redux";
 import db from "../../server/server";
 import { stringify } from "querystring";
-import { getTimer } from "../../store/modules/timer/action";
+import { loginSuccess } from "../../store/modules/user/actions";
 
 function Landing() {
   const loggedUser = useSelector((state: any) => state.user);
@@ -72,6 +72,16 @@ function Landing() {
 
   const dispatch = useDispatch();
 
+  let timeCountDown: number;
+  let timeShortBreak: number;
+  let timeLongBreak: number;
+  let repeat: number;
+
+  const [sound, setSound] = useState(mdiVolumeHigh);
+  const [playPause, setPlayPause] = useState(mdiPause);
+  const [start, setStart] = useState(false);
+  const [stop, setStop] = useState(true);
+
   useEffect(() => {
     db.child("tasks").on("value", (snapshot) => {
       setTasks({
@@ -79,23 +89,17 @@ function Landing() {
       });
     });
     setUser(loggedUser);
-    dispatch(getTimer());
-    console.log("state", initTimer);
-    console.log("defaulttimer", defaultTimer);
-  }, [loggedUser]);
+    setTimer(initTimer.pomodoro);
+    setBreakTimer(initTimer.shortBreak);
+    setLongBreaks(initTimer.longBreak);
+    let minutos = initTimer.pomodoro / 60 || 25;
+    setTimerText(`${minutos}:00`);
+  }, [loggedUser, initTimer]);
 
-  const timeCountDown = defaultTimer.pomodoro;
-  const timeShortBreak = defaultTimer.shortBreak;
-  const timeLongBreak = defaultTimer.longBreak;
-  const repeat = defaultTimer.repeat;
-
-  const [sound, setSound] = useState(mdiVolumeHigh);
-  const [playPause, setPlayPause] = useState(mdiPause);
-  const [timer, setTimer] = useState(timeCountDown);
-  const [breakTimer, setBreakTimer] = useState(timeShortBreak);
-  const [breakLongTimer, setBreakLongTimer] = useState(timeLongBreak);
-  const [start, setStart] = useState(false);
-  const [stop, setStop] = useState(true);
+  const [timer, setTimer] = useState(1500);
+  const [breakTimer, setBreakTimer] = useState(300);
+  const [breakLongTimer, setBreakLongTimer] = useState(900);
+  const [timerText, setTimerText] = useState("25:00");
 
   function muteTimer(event: any) {
     if (sound === mdiVolumeHigh) {
@@ -106,7 +110,7 @@ function Landing() {
   }
 
   function countDown(display: any) {
-    var timer2 = timer,
+    var timer2 = timer || 1500,
       minutes,
       seconds;
 
@@ -114,8 +118,7 @@ function Landing() {
     setStart(true);
 
     if (situacao === "shortBreak" || situacao === "longBreak") {
-      timer2 = timeCountDown;
-      console.log("bbb");
+      timer2 = timer || 1500;
     }
     situacao = "countDown";
 
@@ -142,7 +145,7 @@ function Landing() {
   }
 
   function breakTime(display: any) {
-    var timer2 = breakTimer,
+    var timer2 = breakTimer || 300,
       minutes,
       seconds;
 
@@ -150,7 +153,7 @@ function Landing() {
     setStop(true);
 
     if (situacao === "countDown" || situacao === "longBreak") {
-      timer2 = timeShortBreak;
+      timer2 = breakTimer || 300;
       situacao = "shortBreak";
     }
 
@@ -177,7 +180,7 @@ function Landing() {
   }
 
   function breakLongTime(display: any) {
-    var timer2 = breakLongTimer,
+    var timer2 = breakLongTimer || 900,
       minutes,
       seconds;
 
@@ -185,7 +188,7 @@ function Landing() {
     setStop(true);
 
     if (situacao === "countDown" || situacao === "shortBreak") {
-      timer2 = timeLongBreak;
+      timer2 = breakLongTimer || 900;
     }
 
     situacao = "longBreak";
@@ -320,7 +323,21 @@ function Landing() {
           {/* Log Out */}
           {user.isLogged ? (
             <div className="list-group-item">
-              <button className="btn btn-sidebar" type="button">
+              <button
+                className="btn btn-sidebar"
+                type="button"
+                onClick={() => {
+                  setUser({ name: "", email: "", imgUrl: "", isLogged: false });
+                  dispatch(
+                    loginSuccess({
+                      name: "",
+                      email: "",
+                      imgUrl: "",
+                      isLogged: false,
+                    })
+                  );
+                }}
+              >
                 <Icon path={mdiLogoutVariant} size={0.7} color="#e0e0e0" />
                 <Link to="/">Log Out</Link>
               </button>
@@ -385,7 +402,7 @@ function Landing() {
                 </div>
 
                 {/* Timer */}
-                <h1 id="time">25:00</h1>
+                <h1 id="time">{timerText}</h1>
               </div>
 
               <div className="row m-0">

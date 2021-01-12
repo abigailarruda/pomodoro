@@ -64,7 +64,6 @@ function Account(props: AccountProps) {
           onSuccess={responseGoogle}
           onFailure={responseGoogle}
           cookiePolicy={"single_host_origin"}
-          isSignedIn={true}
         />
         <OAuth2Login
           authorizationUrl="https://github.com/login/oauth/authorize"
