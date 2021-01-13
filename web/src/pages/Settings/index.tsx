@@ -5,7 +5,7 @@ import "./styles.css";
 import Modal from "../../components/Modal";
 
 import { Timer } from "../../server/controllers/TimerController";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setTimer, getTimer } from "../../store/modules/timer/action";
 
 /* Isso aqui é da musica*/
@@ -21,30 +21,31 @@ interface SettingsProps {
 
 function Settings(props: SettingsProps) {
   const dispatch = useDispatch();
+  const oldtimer = useSelector((state: any) => state.timer);
 
   const handleTimerChange = (event: any) => {
     let value = event.target.value;
     let timer: Timer = {
-      pomodoro: 1500,
-      shortBreak: 300,
-      longBreak: 900,
-      sound: "../../components/sounds/bell.mp3",
-      repeat: 4,
+      pomodoro: oldtimer.pomodoro,
+      shortBreak: oldtimer.shortBreak,
+      longBreak: oldtimer.longBreak,
+      sound: oldtimer.sound,
+      repeat: oldtimer.repeat,
     };
     if (value === "default") {
       timer = {
         pomodoro: 1500,
         shortBreak: 300,
         longBreak: 900,
-        sound: "../../components/sounds/bell.mp3",
+        sound: oldtimer.sound,
         repeat: 4,
       };
     } else if (value === "personal") {
       timer = {
         pomodoro: 1800,
-        shortBreak: 300,
-        longBreak: 900,
-        sound: "../../components/sounds/bell.mp3",
+        shortBreak: 120,
+        longBreak: 1500,
+        sound: oldtimer.sound,
         repeat: 4,
       };
     } else if (value === "work") {
@@ -52,13 +53,44 @@ function Settings(props: SettingsProps) {
         pomodoro: 3000,
         shortBreak: 600,
         longBreak: 1200,
-        sound: "../../components/sounds/bell.mp3",
+        sound: oldtimer.sound,
         repeat: 2,
       };
     }
     dispatch(setTimer(timer));
     dispatch(getTimer());
   };
+
+  const handleSoundChange = (event: any) => {
+    let value = event.target.value;
+    let timer: Timer = {
+      pomodoro: oldtimer.pomodoro,
+      shortBreak: oldtimer.shortBreak,
+      longBreak: oldtimer.longBreak,
+      sound: oldtimer.sound,
+      repeat: oldtimer.repeat,
+    };
+    if(value === "beep"){
+      timer = {
+        pomodoro: oldtimer.pomodoro,
+      shortBreak: oldtimer.shortBreak,
+      longBreak: oldtimer.longBreak,
+      sound: "../../components/sounds/beep.mp3",
+      repeat: oldtimer.repeat,
+      };
+    }
+    else{
+      timer = {
+        pomodoro: oldtimer.pomodoro,
+      shortBreak: oldtimer.shortBreak,
+      longBreak: oldtimer.longBreak,
+      sound: "../../components/sounds/bell.mp3",
+      repeat: oldtimer.repeat,
+      };
+    }
+    dispatch(setTimer(timer));
+    dispatch(getTimer());
+  }
 
   return (
     <Modal target={props.id}>
@@ -88,6 +120,7 @@ function Settings(props: SettingsProps) {
             <select 
             className="custom-select" 
             id="sound"
+            onChange={handleSoundChange}
             >
               <option defaultValue="bell">bell</option>
               <option value="beep">beep</option>

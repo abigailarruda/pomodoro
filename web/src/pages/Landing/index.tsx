@@ -121,7 +121,14 @@ function Landing() {
       minutes,
       seconds;
 
-    
+    var playmusic: any;
+
+    if(music === "../../components/sounds/beep.mp3"){
+      playmusic = new UIfx(beepAudio); 
+    }
+    else{
+      playmusic = new UIfx(bellAudio); 
+    }
 
     setStop(false);
     setStart(true);
@@ -145,6 +152,8 @@ function Landing() {
       setTimer(timer2);
 
       if (timer2 <= 0) {
+        playmusic.setVolume(1.0);
+        playmusic.play();
         countAux++;
         countVezes++;
         setPomodoros(countAux);
@@ -163,6 +172,15 @@ function Landing() {
     var timer2 = breakTimer || 300,
       minutes,
       seconds;
+
+      var playmusic: any;
+
+      if(music === "../../components/sounds/beep.mp3"){
+        playmusic = new UIfx(beepAudio); 
+      }
+      else{
+        playmusic = new UIfx(bellAudio); 
+      }
 
     setStart(true);
     setStop(true);
@@ -186,6 +204,8 @@ function Landing() {
       setBreakTimer(timer2);
 
       if (timer2 <= 0) {
+        playmusic.setVolume(1.0);
+        playmusic.play();
         countShortAux++;
         setShortsBreaks(countShortAux);
         clearInterval(estadoBreak);
@@ -201,6 +221,15 @@ function Landing() {
 
     setStart(true);
     setStop(true);
+
+    var playmusic: any;
+
+    if(music === "../../components/sounds/beep.mp3"){
+        playmusic = new UIfx(beepAudio); 
+    }
+    else{
+        playmusic = new UIfx(bellAudio); 
+   }
 
     if (situacao === "countDown" || situacao === "shortBreak") {
       timer2 = breakLongTimer || 900;
@@ -222,6 +251,8 @@ function Landing() {
       setTimer(timer2);
 
       if (timer2 <= 0) {
+        playmusic.setVolume(1.0);
+        playmusic.play();
         countLongAux++;
         setLongBreaks(countLongAux);
         clearInterval(estadoLongBreak);
@@ -233,15 +264,12 @@ function Landing() {
     setStart(false);
     if (situacao === "countDown") {
       clearInterval(estado);
-      console.log("limpar countDown");
     }
     if (situacao === "shortBreak") {
       clearInterval(estadoBreak);
-      console.log("limpar shortBreak");
     }
     if (situacao === "longBreak") {
       clearInterval(estadoLongBreak);
-      console.log("limpar longBreak");
     }
   });
 
@@ -249,15 +277,12 @@ function Landing() {
     var display = document.querySelector("#time");
     if (situacao === "countDown") {
       countDown(display);
-      console.log("countDown");
     }
     if (situacao === "shortBreak") {
       breakTime(display);
-      console.log("shortBreak");
     }
     if (situacao === "longBreak") {
       breakLongTime(display);
-      console.log("longBreak");
     }
   }
 
