@@ -107,11 +107,14 @@ function Landing() {
   const [repeat, setRepeat] = useState(4);
   const [timerText, setTimerText] = useState("25:00");
   const [music, setMusic] = useState("../../components/sounds/bell.mp3");
+  const [volume, setVolume] = useState(1.0);
 
   function muteTimer(event: any) {
     if (sound === mdiVolumeHigh) {
+      setVolume(0.0);
       setSound(mdiVolumeOff);
     } else {
+      setVolume(1.0);
       setSound(mdiVolumeHigh);
     }
   }
@@ -152,7 +155,7 @@ function Landing() {
       setTimer(timer2);
 
       if (timer2 <= 0) {
-        playmusic.setVolume(1.0);
+        playmusic.setVolume(volume);
         playmusic.play();
         countAux++;
         countVezes++;
@@ -204,7 +207,7 @@ function Landing() {
       setBreakTimer(timer2);
 
       if (timer2 <= 0) {
-        playmusic.setVolume(1.0);
+        playmusic.setVolume(volume);
         playmusic.play();
         countShortAux++;
         setShortsBreaks(countShortAux);
@@ -251,7 +254,7 @@ function Landing() {
       setTimer(timer2);
 
       if (timer2 <= 0) {
-        playmusic.setVolume(1.0);
+        playmusic.setVolume(volume);
         playmusic.play();
         countLongAux++;
         setLongBreaks(countLongAux);
