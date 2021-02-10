@@ -38,17 +38,7 @@ A **Técnica Pomodoro** é um método de gerenciamento de tempo desenvolvido por
 
 ## :pushpin: Características
 
-- A interface do usuário pode ser visualizada em tempo real no [Figma](https://www.figma.com/proto/S570npN0COoOUTQjL0nqC0/Pomodoro?node-id=33%3A3&scaling=scale-down-width&hide-ui=1).
-
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/26419930/97060454-bf4a5080-1569-11eb-91ad-9c24d4cc161e.png" alt="UI - Landing on web"/>
-</p>
-<p align="center">Landing Page na web</p>
-
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/26419930/97060517-f28cdf80-1569-11eb-832c-aeb5d4e26516.png" alt="UI - Landing on mobile"/>
-</p>
-<p align="center">Landing Page no mobile</p>
+- A interface do usuário pode ser visualizada no [Figma](https://www.figma.com/proto/S570npN0COoOUTQjL0nqC0/Pomodoro?node-id=33%3A3&scaling=scale-down-width&hide-ui=1).
 
 ## :computer: Tecnologias
 
@@ -58,6 +48,8 @@ A stack utilizada para criar o Pomodoro está em constante atualização. Até o
 - [ ] [Node.js (v12.19.0 LTS)](https://nodejs.org/pt-br)
 - [ ] [React.js (v17.0.1)](https://reactjs.org)
 - [ ] [Typescript (v4.0)](https://www.typescriptlang.org)
+- [ ] [Redux (v4.0.5)](https://redux.js.org/)
+- [ ] [React Redux (v7.2.2)](https://react-redux.js.org/)
 
 ## :rocket: Execução
 
@@ -66,6 +58,7 @@ A stack utilizada para criar o Pomodoro está em constante atualização. Até o
   - É necessário ter instalado em sua máquina o **[Node.js](https://nodejs.org/en/)**. A versão **12.19.0** é recomendada.
   - É **necessário** ter o **[Git](https://git-scm.com/)** (v2.29.0 for Windows) instalado e configurado no computador.
   - Para a configuração e instalação usaremos um gerenciador de pacotes. Recomendamos o uso do **[Yarn](https://yarnpkg.com/)** (v1.22.5).
+  - É indispensável criar um projeto do **[Firebase](https://firebase.google.com/docs/web/setup)** para adicioná-lo ao Pomodoro.
 
 1. Clone o repositório
 
@@ -73,10 +66,24 @@ A stack utilizada para criar o Pomodoro está em constante atualização. Até o
   $ git clone https://github.com/abigailarruda/pomodoro.git
 ```
 
-2. Execute a aplicação (na ordem a seguir)
+2. Crie um projeto do Firebase, de acordo com este [guia](https://firebase.google.com/docs/web/setup). Copie o objeto de configuração do seu projeto, conforme o exemplo abaixo e cole no arquivo `server.ts`, no diretório `pomodoro\web\src\server`.
 
 ```sh
-  # Aplicação
+var firebaseConfig = {
+  apiKey: "API_KEY",
+  authDomain: "PROJECT_ID.firebaseapp.com",
+  databaseURL: "https://PROJECT_ID.firebaseio.com",
+  projectId: "PROJECT_ID",
+  storageBucket: "PROJECT_ID.appspot.com",
+  messagingSenderId: "SENDER_ID",
+  appId: "APP_ID",
+  measurementId: "G-MEASUREMENT_ID",
+};
+```
+
+3. Execute a aplicação (na ordem a seguir)
+
+```sh
   $ cd web
   $ yarn
   $ yarn start
@@ -84,6 +91,6 @@ A stack utilizada para criar o Pomodoro está em constante atualização. Até o
 
 ---
 
-> Este projeto está sendo desenvolvido para a disciplina Construção de Software no curso de Engenharia de Software da Universidade Federal de Goiás.
+> Este projeto foi desenvolvido para a disciplina Construção de Software no curso de Engenharia de Software da Universidade Federal de Goiás.
 
-> Os alunos que contribuem para este repositório são [Abigail Arruda](https://github.com/abigailarruda), [Heitor Melo](https://github.com/heitormelo26), [Jacob Ferraz](https://github.com/JacobFerraz), [Lucas Borges](https://github.com/luqiborges) e [Victor Melo](https://github.com/victormlb06).
+> Os alunos que contribuíram para este repositório foram: [Abigail Arruda](https://github.com/abigailarruda), [Heitor Melo](https://github.com/heitormelo26), [Jacob Ferraz](https://github.com/JacobFerraz), [Lucas Borges](https://github.com/luqiborges) e [Victor Melo](https://github.com/victormlb06).
